@@ -5,7 +5,7 @@ import FoundationNetworking
 #endif
 
 public extension URLRequest {
-    func encodedBody<T: Encodable>(_ body: T, encoder: JSONEncoder) throws -> Self {
+    func encodedBody(_ body: Encodable, encoder: ContentDataEncoder) throws -> Self {
         var request = self
         
         try request.encodeBody(body, encoder: encoder)
@@ -13,10 +13,10 @@ public extension URLRequest {
         return request
     }
     
-    /// Use a `JSONEncoder` object as request body and set the "Content-Type" header associated to the encoder
-    mutating func encodeBody<T: Encodable>(_ body: T, encoder: JSONEncoder) throws {
-        httpBody = try encoder.encode(body)
-        setHeaders([.contentType: "application/json"])
+    /// Use a `Encodable` object as request body and set the "Content-Type" header associated to the encoder
+    mutating func encodeBody(_ body: Encodable, encoder: ContentDataEncoder) throws {
+        httpBody = try body.encoded(with: encoder)
+        setHeaders([.contentType: type(of: encoder).contentType.value])
     }
     
 }
