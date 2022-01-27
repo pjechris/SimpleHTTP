@@ -7,7 +7,7 @@ public enum Method: String {
     case delete
 }
 
-/// An Http request expecting an `Output` response
+/// A Http request expecting an `Output` response
 ///
 /// Highly inspired by https://swiftwithmajid.com/2021/02/10/building-type-safe-networking-in-swift/
 public struct Request<Output> {
@@ -17,7 +17,7 @@ public struct Request<Output> {
     public let method: Method
     public let body: Encodable?
     public let parameters: [String: String]
-    public private(set) var headers: [String: String] = [:]
+    public private(set) var headers: HTTPHeaderFields = [:]
     
     public static func get(_ path: Path, parameters: [String: String] = [:]) -> Self {
         self.init(path: path, method: .get, parameters: parameters, body: nil)
@@ -37,11 +37,6 @@ public struct Request<Output> {
         self.init(path: path, method: .delete, parameters: parameters, body: nil)
     }
     
-    public mutating func headers(_ headers: [String: String]) -> Self {
-        self.headers.merge(headers) { $1 }
-        return self
-    }
-    
     private init(path: Path, method: Method, parameters: [String: String] = [:], body: Encodable?) {
         self.path = path.path
         self.method = method
@@ -49,4 +44,12 @@ public struct Request<Output> {
         self.parameters = parameters
     }
     
+    /// add headers to the request
+    public func headers(_ newHeaders: [HTTPHeader: String]) -> Self {
+        var request = self
+        
+        request.headers.merge(newHeaders) { $1 }
+        
+        return request
+    }
 }
