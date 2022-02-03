@@ -10,4 +10,12 @@ extension URLRequest {
             setValue(value, forHTTPHeaderField: header.key)
         }
     }
+    
+    public func settingHeaders(_ headers: HTTPHeaderFields) -> Self {
+        var urlRequest = self
+
+        urlRequest.setHeaders(headers)
+
+        return urlRequest
+    }
 }
