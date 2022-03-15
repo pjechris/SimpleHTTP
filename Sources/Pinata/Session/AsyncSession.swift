@@ -1,29 +1,26 @@
 import Foundation
 import Combine
 
-/// Primary class of the library used to perform http request using `Request` objects
+/// Primary class of the library used to perform http request using `Request`
+@dynamicMemberLookup
 public class AsyncSession {
     /// Data returned by a http request
-    public typealias RequestData = URLSession.DataTaskPublisher.Output
+    public typealias RequestData = (data: Data, response: URLResponse)
 
-    /// a Publisher emitting `RequestData`
-    public typealias RequestDataPublisher = AnyPublisher<RequestData, Error>
+    /// a function returning `RequestData` for a `URLRequest`
+    public typealias URLRequestTask = (URLRequest) async throws -> RequestData
 
     let baseURL: URL
     let config: SessionConfiguration
-    /// a closure returning a publisher based for a given `URLRequest`
-    let urlRequestPublisher: (URLRequest) -> RequestDataPublisher
+    /// a closure returning `RequestData` for a `URLRequest`
+    let dataTask: URLRequestTask
 
     /// init the class using a `URLSession` instance
     /// - Parameter baseURL: common url for all the requests. Allow to switch environments easily
     /// - Parameter configuration: session configuration to use
     /// - Parameter urlSession: `URLSession` instance to use to make requests.
     public convenience init(baseURL: URL, configuration: SessionConfiguration = .init(), urlSession: URLSession) {
-        self.init(
-            baseURL: baseURL,
-            configuration: configuration,
-            dataPublisher: urlSession.dataPublisher(for:)
-        )
+        self.init(baseURL: baseURL, configuration: configuration, dataTask: urlSession.dataTask(with:))
     }
 
     /// init the class with a base url for request
@@ -34,37 +31,35 @@ public class AsyncSession {
     public init(
         baseURL: URL,
         configuration: SessionConfiguration = SessionConfiguration(),
-        dataPublisher: @escaping (URLRequest) -> RequestDataPublisher = { URLSession.shared.dataPublisher(for: $0) }
+        dataTask: @escaping URLRequestTask = URLSession.shared.dataTask(with:)
     ) {
         self.baseURL = baseURL
         self.config = configuration
-        self.urlRequestPublisher = dataPublisher
+        self.dataTask = dataTask
     }
 
     /// Return a publisher performing request and returning `Output` data
     ///
     /// The request is validated and decoded appropriately on success.
     /// - Returns: a Publisher emitting Output on success, an error otherwise
-    //    public func publisher<Output: Decodable>(for request: Request<Output>) -> AnyPublisher<Output, Error> {
-    //        dataPublisher(for: request)
-    //            .receive(on: config.decodingQueue)
-    //            .map { response -> (output: Result<Output, Error>, request: Request<Output>) in
-    //                let output = Result {
-    //                    try self.config.interceptor.adaptOutput(
-    //                        try self.config.decoder.decode(Output.self, from: response.data),
-    //                        for: response.request
-    //                    )
-    //                }
-    //
-    //                return (output: output, request: response.request)
-    //            }
-    //            .handleEvents(receiveOutput: { self.log($0.output, for: $0.request) })
-    //            .tryMap { try $0.output.get() }
-    //            .eraseToAnyPublisher()
-    //    }
+    public func response<Output: Decodable>(for request: Request<Output>) async throws -> Output {
+        let result = try await dataPublisher(for: request)
+
+        do {
+            let decodedOutput = try config.decoder.decode(Output.self, from: result.data)
+            let output = try config.interceptor.adaptOutput(decodedOutput, for: result.request)
+
+            log(.success(output), for: result.request)
+            return output
+        }
+        catch {
+            log(.failure(error), for: result.request)
+            throw error
+        }
+    }
 
     /// Return a publisher performing request which has no return value
-    public func publisher(for request: Request<Void>) async throws {
+    public func response(for request: Request<Void>) async throws {
         let result = try await dataPublisher(for: request)
         log(.success(()), for: result.request)
     }
@@ -80,7 +75,7 @@ extension AsyncSession {
             .settingHeaders([.accept: type(of: config.decoder).contentType.value])
 
         do {
-            let result = try await URLSession.shared.dataTask(with: urlRequest)
+            let result = try await dataTask(urlRequest)
 
             try (result.response as? HTTPURLResponse)?.validate()
 
@@ -97,14 +92,8 @@ extension AsyncSession {
         config.interceptor.receivedResponse(response, for: request)
     }
 
-    /// try to rescue an error while making a request and retry it when rescue suceeded
-    private func rescue<Output>(error: Error, request: Request<Output>) async throws -> Response<Output> {
-        guard let rescue = config.interceptor.rescueRequest(request, error: error) else {
-            throw error
-        }
-
-        // TODO
-        throw error
+    subscript<T>(dynamicMember keyPath: KeyPath<SessionConfiguration, T>) -> T {
+        config[keyPath: keyPath]
     }
 }
 
