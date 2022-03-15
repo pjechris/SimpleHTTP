@@ -30,6 +30,24 @@ extension CompositeInterceptor: Interceptor {
         
         return Publishers.MergeMany(publishers).eraseToAnyPublisher()
     }
+
+  public func rescueRequest<Output>(_ request: Request<Output>, error: Error) async throws -> Bool {
+    await withThrowingTaskGroup(of: Bool.self) { group in
+      var rescue = false
+
+      for interceptor in interceptors {
+        group.addTask(priority: .background) {
+          try await interceptor.rescueRequest(request, error: error)
+        }
+      }
+
+      for try await interceptorRescued in group {
+        rescue = rescue || interceptorRescued
+      }
+
+      return rescue
+    }
+  }
     
     public func adaptOutput<Output>(_ response: Output, for request: Request<Output>) throws -> Output {
         try reduce(response) { response, interceptor in

@@ -84,7 +84,11 @@ extension AsyncSession {
         catch {
             self.log(.failure(error), for: adaptedRequest)
 
-            return try await self.rescue(error: error, request: request)
+          if try await config.interceptor.rescueRequest(request, error: error) {
+            return try await dataPublisher(for: request)
+          }
+
+          throw error
         }
     }
 
