@@ -1,37 +1,37 @@
 import Foundation
 import Combine
 
-/// Primary class of the library used to perform http request using `Request`
+/// Primary class of the library used to perform http request using a `Request` object
 @dynamicMemberLookup
 public class AsyncSession {
     /// Data returned by a http request
-    public typealias RequestData = (data: Data, response: URLResponse)
+    public typealias DataResponse = (data: Data, response: URLResponse)
 
-    /// a function returning `RequestData` for a `URLRequest`
-    public typealias URLRequestTask = (URLRequest) async throws -> RequestData
+    /// a function returning a `RequestData` from a `URLRequest`
+    public typealias URLRequestTask = (URLRequest) async throws -> DataResponse
 
     let baseURL: URL
     let config: SessionConfiguration
-    /// a closure returning `RequestData` for a `URLRequest`
+    /// a closure returning a `DataResponse` from a `URLRequest`
     let dataTask: URLRequestTask
 
     /// init the class using a `URLSession` instance
     /// - Parameter baseURL: common url for all the requests. Allow to switch environments easily
     /// - Parameter configuration: session configuration to use
     /// - Parameter urlSession: `URLSession` instance to use to make requests.
-    public convenience init(baseURL: URL, configuration: SessionConfiguration = .init(), urlSession: URLSession) {
-        self.init(baseURL: baseURL, configuration: configuration, dataTask: urlSession.dataTask(with:))
+    public convenience init(baseURL: URL, configuration: SessionConfiguration = .init(), urlSession: URLSession = .shared) {
+        self.init(baseURL: baseURL, configuration: configuration, dataTask: { try await urlSession.data(for: $0) })
     }
 
     /// init the class with a base url for request
     /// - Parameter baseURL: common url for all the requests. Allow to switch environments easily
     /// - Parameter configuration: session configuration to use
-    /// - Parameter dataPublisher: publisher used by the class to make http requests. If none provided it default
+    /// - Parameter dataTask: publisher used by the class to make http requests. If none provided it default
     /// to `URLSession.dataPublisher(for:)`
     public init(
         baseURL: URL,
         configuration: SessionConfiguration = SessionConfiguration(),
-        dataTask: @escaping URLRequestTask = URLSession.shared.dataTask(with:)
+        dataTask: @escaping URLRequestTask
     ) {
         self.baseURL = baseURL
         self.config = configuration
