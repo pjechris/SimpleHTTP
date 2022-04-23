@@ -1,5 +1,5 @@
 import XCTest
-@testable import Pinata
+@testable import SimpleHTTP
 
 class RequestTests: XCTestCase {
     enum TestEndpoint: String, Path {

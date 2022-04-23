@@ -1,6 +1,6 @@
 import Foundation
 import XCTest
-@testable import Pinata
+@testable import SimpleHTTP
 
 class URLRequestTests: XCTestCase {
     func test_initFromRequest_pathIsSetted() throws {

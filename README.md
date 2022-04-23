@@ -1,4 +1,4 @@
-# Pinata
+# SimpleHTTP
 
 Simple declarative HTTP API framework
 
