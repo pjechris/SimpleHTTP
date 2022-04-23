@@ -1,6 +1,6 @@
 import XCTest
 import Combine
-import Pinata
+import SimpleHTTP
 
 class PublisherValidateTests: XCTestCase {
     var cancellables: Set<AnyCancellable> = []

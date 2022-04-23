@@ -1,5 +1,5 @@
 import XCTest
-import Pinata
+import SimpleHTTP
 
 #if canImport(FoundationNetworking)
 import FoundationNetworking

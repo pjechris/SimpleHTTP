@@ -1,6 +1,6 @@
 import XCTest
 import Combine
-import Pinata
+import SimpleHTTP
 
 class SessionTests: XCTestCase {
     let baseURL = URL(string: "https://sessionTests.io")!

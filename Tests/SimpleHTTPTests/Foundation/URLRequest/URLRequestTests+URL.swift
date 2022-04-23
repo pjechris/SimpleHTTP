@@ -1,6 +1,6 @@
 import Foundation
 import XCTest
-@testable import Pinata
+@testable import SimpleHTTP
 
 class URLRequestURLTests: XCTestCase {
     func test_relativeTo_requestURLHasBaseURL() {
