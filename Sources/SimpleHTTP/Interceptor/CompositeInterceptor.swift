@@ -32,7 +32,7 @@ extension CompositeInterceptor: Interceptor {
     }
 
   public func rescueRequest<Output>(_ request: Request<Output>, error: Error) async throws -> Bool {
-    await withThrowingTaskGroup(of: Bool.self) { group in
+    try await withThrowingTaskGroup(of: Bool.self) { group in
       var rescue = false
 
       for interceptor in interceptors {

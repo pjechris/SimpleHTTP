@@ -2,7 +2,6 @@ import Foundation
 import Combine
 
 /// Primary class of the library used to perform http request using a `Request` object
-@dynamicMemberLookup
 public class AsyncSession {
     /// Data returned by a http request
     public typealias DataResponse = (data: Data, response: URLResponse)
@@ -28,20 +27,16 @@ public class AsyncSession {
     /// - Parameter configuration: session configuration to use
     /// - Parameter dataTask: publisher used by the class to make http requests. If none provided it default
     /// to `URLSession.dataPublisher(for:)`
-    public init(
-        baseURL: URL,
-        configuration: SessionConfiguration = SessionConfiguration(),
-        dataTask: @escaping URLRequestTask
-    ) {
+    public init(baseURL: URL, configuration: SessionConfiguration = SessionConfiguration(), dataTask: @escaping URLRequestTask) {
         self.baseURL = baseURL
         self.config = configuration
         self.dataTask = dataTask
     }
 
-    /// Return a publisher performing request and returning `Output` data
+    /// Return a publisher performing `request` and returning `Output`
     ///
     /// The request is validated and decoded appropriately on success.
-    /// - Returns: a Publisher emitting Output on success, an error otherwise
+    /// - Returns: a async Output on success, an error otherwise
     public func response<Output: Decodable>(for request: Request<Output>) async throws -> Output {
         let result = try await dataPublisher(for: request)
 
@@ -58,7 +53,7 @@ public class AsyncSession {
         }
     }
 
-    /// Return a publisher performing request which has no return value
+    /// Perform asynchronously `request` which has no return value
     public func response(for request: Request<Void>) async throws {
         let result = try await dataPublisher(for: request)
         log(.success(()), for: result.request)
@@ -68,11 +63,7 @@ public class AsyncSession {
 extension AsyncSession {
     private func dataPublisher<Output>(for request: Request<Output>) async throws -> Response<Output> {
         let adaptedRequest = config.interceptor.adaptRequest(request)
-
-        let urlRequest = try adaptedRequest
-            .toURLRequest(encoder: config.encoder)
-            .relativeTo(baseURL)
-            .settingHeaders([.accept: type(of: config.decoder).contentType.value])
+        let urlRequest = try adaptedRequest.toURLRequest(encoder: config.encoder, relativeTo: baseURL, accepting: config.decoder)
 
         do {
             let result = try await dataTask(urlRequest)
@@ -94,10 +85,6 @@ extension AsyncSession {
 
     private func log<Output>(_ response: Result<Output, Error>, for request: Request<Output>) {
         config.interceptor.receivedResponse(response, for: request)
-    }
-
-    subscript<T>(dynamicMember keyPath: KeyPath<SessionConfiguration, T>) -> T {
-        config[keyPath: keyPath]
     }
 }
 

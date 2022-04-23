@@ -151,6 +151,10 @@ private extension Request {
 }
 
 private class InterceptorStub: Interceptor {
+    func rescueRequest<Output>(_ request: Request<Output>, error: Error) async throws -> Bool {
+        return false
+    }
+    
     var rescueRequestErrorMock: ((Error) -> AnyPublisher<Void, Error>?)?
     var receivedResponseMock: ((Any, Any) -> ())?
     var adaptResponseMock: ((Any, Any) throws -> Any)?
