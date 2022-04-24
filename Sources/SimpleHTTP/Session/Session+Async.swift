@@ -1,6 +1,8 @@
 import Foundation
 import Combine
 
+#if canImport(_Concurrency)
+
 extension Session {
     public func response<Output: Decodable>(for request: Request<Output>) async throws -> Output {
        try await response(publisher: publisher(for: request))
@@ -33,3 +35,5 @@ extension Session {
             })
     }
 }
+
+#endif
