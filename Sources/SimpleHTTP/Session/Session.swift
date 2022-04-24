@@ -78,9 +78,7 @@ extension Session {
         
         do {
             let urlRequest = try adaptedRequest
-                .toURLRequest(encoder: config.encoder)
-                .relativeTo(baseURL)
-                .settingHeaders([.accept: type(of: config.decoder).contentType.value])
+                .toURLRequest(encoder: config.encoder, relativeTo: baseURL, accepting: config.decoder)
             
             return urlRequestPublisher(urlRequest)
                 .validate(config.errorConverter)

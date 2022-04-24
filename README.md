@@ -1,5 +1,10 @@
 # SimpleHTTP
 
+![swift](https://img.shields.io/badge/Swift-5.5%2B-orange?logo=swift&logoColor=white)
+![platforms](https://img.shields.io/badge/Platforms-iOS%20%7C%20macOS-lightgrey)
+![tests](https://github.com/pjechris/SimpleHTTP/actions/workflows/test.yml/badge.svg)
+[![twitter](https://img.shields.io/badge/twitter-pjechris-1DA1F2?logo=twitter&logoColor=white)](https://twitter.com/pjechris)
+
 Simple declarative HTTP API framework
 
 ## Basic Usage
