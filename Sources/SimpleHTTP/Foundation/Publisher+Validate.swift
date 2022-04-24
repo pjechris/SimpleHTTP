@@ -13,7 +13,7 @@ extension Publisher where Output == URLSession.DataTaskPublisher.Output {
     public func validate(_ converter: DataErrorConverter? = nil) -> AnyPublisher<Output, Error> {
         tryMap { output in
             do {
-                try (output.response as? HTTPURLResponse)?.validate()
+                try output.response.validate()
                 return output
             }
             catch {

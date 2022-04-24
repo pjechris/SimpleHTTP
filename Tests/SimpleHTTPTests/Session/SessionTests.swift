@@ -2,117 +2,90 @@ import XCTest
 import Combine
 import SimpleHTTP
 
-class SessionTests: XCTestCase {
+class SessionAsyncTests: XCTestCase {
     let baseURL = URL(string: "https://sessionTests.io")!
     let encoder = JSONEncoder()
     let decoder = JSONDecoder()
-    var cancellables: Set<AnyCancellable> = []
     
-    override func tearDown() {
-        cancellables.removeAll()
+    func test_response_responseIsValid_decodedOutputIsReturned() async throws {
+        let expectedResponse = Content(value: "response")
+        let session = sesssionStub()  { (data: try! JSONEncoder().encode(expectedResponse), response: .success) }
+        let response = try await session.response(for: Request.test())
+        
+        XCTAssertEqual(response, expectedResponse)
     }
     
-    func test_publisherFor_responseIsValid_decodedOutputIsReturned() throws {
-        let response = Content(value: "response")
-        let session = sesssionStub()  { (data: try! JSONEncoder().encode(response), response: .success) }
-        let expectation = XCTestExpectation()
-        
-        session.publisher(for: Request.test())
-            .sink(
-                receiveCompletion: { _ in },
-                receiveValue: {
-                    XCTAssertEqual($0, response)
-                    expectation.fulfill()
-                }
-            )
-            .store(in: &cancellables)
-        
-        wait(for: [expectation], timeout: 1)
-    }
-    
-    func test_publisherFor_responseIsValid_adaptResponseThrow_itReturnAnError() {
+    func test_response_responseIsValid_adaptResponseThrow_itReturnAnError() async {
         let output = Content(value: "adapt throw")
         let interceptor = InterceptorStub()
         let session = sesssionStub(
             interceptor: [interceptor],
             data: { (data: try! JSONEncoder().encode(output), response: .success) }
         )
-        let expectation = XCTestExpectation()
         
         interceptor.adaptResponseMock = { _, _ in
             throw CustomError()
         }
         
-        session.publisher(for: .test())
-            .sink(
-                receiveCompletion: {
-                    if case let .failure(error) = $0 {
-                        XCTAssertEqual(error as? CustomError, CustomError())
-                    }
-                    else {
-                        XCTFail()
-                    }
-                    
-                    expectation.fulfill()
-                },
-                receiveValue: { _ in }
-            )
-            .store(in: &cancellables)
-        
-        wait(for: [expectation], timeout: 1)
+        do {
+            _ = try await session.response(for: .test())
+            XCTFail()
+        }
+        catch {
+            XCTAssertEqual(error as? CustomError, CustomError())
+        }
     }
     
-    func test_publisherFor_rescue_rescueIsSuccess_itRetryRequest() {
+    func test_response_rescue_rescueIsSuccess_itRetryRequest() async throws {
         var isRescued = false
         let interceptor = InterceptorStub()
         let session = sesssionStub(interceptor: [interceptor]) {
             (data: Data(), response: isRescued ? .success : .unauthorized)
         }
-        let expectation = XCTestExpectation()
         
         interceptor.rescueRequestErrorMock = { _ in
             isRescued.toggle()
-            return Empty(completeImmediately: true).eraseToAnyPublisher()
+            return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
         }
         
-        session.publisher(for: .void())
-            .sink(
-                receiveCompletion: {
-                    XCTAssertTrue(isRescued)
-                    
-                    if case .failure = $0 {
-                        XCTFail("retried request final result should be success")
-                    }
-                    
-                    expectation.fulfill()
-                },
-                receiveValue: { _ in }
-            )
-            .store(in: &cancellables)
+        _ = try await session.response(for: .void())
         
-        wait(for: [expectation], timeout: 1)
+        XCTAssertTrue(isRescued)
     }
     
-    func test_publisherFor_outputIsDecoded_itCallInterceptorReceivedResponse() {
+    func test_response_outputIsDecoded_itCallInterceptorReceivedResponse() async throws {
         let output = Content(value: "hello")
         let interceptor = InterceptorStub()
         let session = sesssionStub(interceptor: [interceptor]) {
             (data: try! JSONEncoder().encode(output), response: .success)
         }
-        let expectation = XCTestExpectation()
         
         interceptor.receivedResponseMock = { response, _ in
             let response = response as? Result<Content, Error>
             
             XCTAssertEqual(try? response?.get(), output)
-            expectation.fulfill()
         }
         
-        session.publisher(for: .test())
-            .sink(receiveCompletion: { _ in }, receiveValue: { _ in })
-            .store(in: &cancellables)
+        _ = try await session.response(for: .test())
+    }
+    
+    func test_response_httpDataHasCustomError_returnCustomError() async throws {
+        let session = Session(
+            baseURL: baseURL,
+            configuration: SessionConfiguration(encoder: encoder, decoder: decoder, dataError: CustomError.self),
+            dataPublisher: { _ in
+                Just((data: try! JSONEncoder().encode(CustomError()), response: .unauthorized))
+                    .setFailureType(to: Error.self)
+                    .eraseToAnyPublisher()
+            })
         
-        wait(for: [expectation], timeout: 1)
+        do {
+            _ = try await session.response(for: .test())
+            XCTFail()
+        }
+        catch {
+            XCTAssertEqual(error as? CustomError, CustomError())
+        }
     }
     
     /// helper to create a session for testing
@@ -136,7 +109,7 @@ private struct Content: Codable, Equatable {
     let value: String
 }
 
-private struct CustomError: Error, Equatable {
+private struct CustomError: Error, Codable, Equatable {
     
 }
 
@@ -151,10 +124,6 @@ private extension Request {
 }
 
 private class InterceptorStub: Interceptor {
-    func rescueRequest<Output>(_ request: Request<Output>, error: Error) async throws -> Bool {
-        return false
-    }
-    
     var rescueRequestErrorMock: ((Error) -> AnyPublisher<Void, Error>?)?
     var receivedResponseMock: ((Any, Any) -> ())?
     var adaptResponseMock: ((Any, Any) throws -> Any)?
