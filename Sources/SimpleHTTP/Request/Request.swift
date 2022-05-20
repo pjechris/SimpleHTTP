@@ -16,32 +16,32 @@ public struct Request<Output> {
     public let path: String
     public let method: Method
     public let body: Encodable?
-    public let parameters: [String: String]
+    public let query: [String: QueryParam]
     public private(set) var headers: HTTPHeaderFields = [:]
     
-    public static func get(_ path: Path, parameters: [String: String] = [:]) -> Self {
-        self.init(path: path, method: .get, parameters: parameters, body: nil)
+    public static func get(_ path: Path, query: [String: QueryParam] = [:]) -> Self {
+        self.init(path: path, method: .get, query: query, body: nil)
     }
     
-    public static func post(_ path: Path, body: Encodable?, parameters: [String: String] = [:])
+    public static func post(_ path: Path, body: Encodable?, query: [String: QueryParam] = [:])
     -> Self {
-        self.init(path: path, method: .post, parameters: parameters, body: body)
+        self.init(path: path, method: .post, query: query, body: body)
     }
     
-    public static func put(_ path: Path, body: Encodable, parameters: [String: String] = [:])
+    public static func put(_ path: Path, body: Encodable, query: [String: QueryParam] = [:])
     -> Self {
-        self.init(path: path, method: .put, parameters: parameters, body: body)
+        self.init(path: path, method: .put, query: query, body: body)
     }
     
-    public static func delete(_ path: Path, parameters: [String: String] = [:]) -> Self {
-        self.init(path: path, method: .delete, parameters: parameters, body: nil)
+    public static func delete(_ path: Path, query: [String: QueryParam] = [:]) -> Self {
+        self.init(path: path, method: .delete, query: query, body: nil)
     }
     
-    private init(path: Path, method: Method, parameters: [String: String] = [:], body: Encodable?) {
+    private init(path: Path, method: Method, query: [String: QueryParam] = [:], body: Encodable?) {
         self.path = path.path
         self.method = method
         self.body = body
-        self.parameters = parameters
+        self.query = query
     }
     
     /// add headers to the request
