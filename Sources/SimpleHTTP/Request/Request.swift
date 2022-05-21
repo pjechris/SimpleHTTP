@@ -37,7 +37,7 @@ public struct Request<Output> {
         self.init(path: path, method: .delete, query: query, body: nil)
     }
     
-    private init(path: Path, method: Method, query: [String: QueryParam] = [:], body: Encodable?) {
+    private init(path: Path, method: Method, query: [String: QueryParam], body: Encodable?) {
         self.path = path.path
         self.method = method
         self.body = body
