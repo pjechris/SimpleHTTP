@@ -10,7 +10,7 @@ extension URL {
             throw URLComponents.Error.invalid(path: request.path)
         }
         
-        let queryItems = (components.queryItems ?? []) + request.parameters.queryItems
+        let queryItems = (components.queryItems ?? []) + request.query.queryItems
         
         components.queryItems = queryItems.isEmpty ? nil : queryItems
         
