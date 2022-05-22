@@ -6,7 +6,7 @@ public struct URLDataResponse {
 }
 
 extension URLDataResponse {
-    public func validate(errorDecoder: DataErrorConverter? = nil) throws {
+    public func validate(errorDecoder: DataErrorDecoder? = nil) throws {
         do {
             try response.validateStatusCode()
         }
