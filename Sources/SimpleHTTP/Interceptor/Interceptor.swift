@@ -26,10 +26,6 @@ public protocol ResponseInterceptor {
     func receivedResponse<Output>(_ result: Result<Output, Error>, for request: Request<Output>)
 }
 
-public protocol ResponseLogger {
-    func receivedResponse<Output>(_ result: Result<Output, Error>, for request: Request<Output>)
-}
-
 extension RequestInterceptor {
     func shouldRescueRequest<Output>(_ request: Request<Output>, error: Error) async throws -> Bool {
         var cancellable: Set<AnyCancellable> = []
