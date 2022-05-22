@@ -74,17 +74,17 @@ public class Session {
 
 extension Session {
     private func dataPublisher<Output>(for request: Request<Output>) -> AnyPublisher<Response<Output>, Error> {
-        let adaptedRequest = config.interceptor.adaptRequest(request)
+        let modifiedRequest = config.interceptor.adaptRequest(request)
         
         do {
-            let urlRequest = try adaptedRequest
+            let urlRequest = try modifiedRequest
                 .toURLRequest(encoder: config.encoder, relativeTo: baseURL, accepting: config.decoder)
             
             return urlRequestPublisher(urlRequest)
                 .validate(config.errorConverter)
-                .map { Response(data: $0.data, request: adaptedRequest) }
-                .handleEvents(receiveCompletion: { self.logIfFailure($0, for: adaptedRequest) })
+                .map { Response(data: $0.data, request: modifiedRequest) }
                 .tryCatch { try self.rescue(error: $0, request: request) }
+                .handleEvents(receiveCompletion: { self.logIfFailure($0, for: modifiedRequest) })
                 .eraseToAnyPublisher()
         }
         catch {
