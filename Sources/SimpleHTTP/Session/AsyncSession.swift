@@ -18,15 +18,18 @@ extension URLSession {
             .resume()
         }
     }
+    
+    public func data(for urlRequest: URLRequest) async throws -> URLDataResponse {
+        let (data, response) = try await data(for: urlRequest)
+        
+        return URLDataResponse(data: data, response: response as! HTTPURLResponse)
+    }
 }
 
 /// Primary class of the library used to perform http request using a `Request` object
 public class AsyncSession {
-    /// Data returned by a http request
-    public typealias DataResponse = (data: Data, response: URLResponse)
-
     /// a function returning a `RequestData` from a `URLRequest`
-    public typealias URLRequestTask = (URLRequest) async throws -> DataResponse
+    public typealias URLRequestTask = (URLRequest) async throws -> URLDataResponse
 
     let baseURL: URL
     let config: SessionConfiguration
@@ -96,27 +99,18 @@ extension AsyncSession {
         do {
             let result = try await dataTask(urlRequest)
             
-            do {
-                try result.response.validate()
-            }
-            catch let error as HTTPError {
-                guard let converter = config.errorConverter, !result.data.isEmpty else {
-                    throw error
-                }
-                
-                throw try converter(result.data)
-            }
+            try result.validate(errorDecoder: config.errorConverter)
 
             return Response(data: result.data, request: modifiedRequest)
         }
         catch {
             self.log(.failure(error), for: modifiedRequest)
 
-          if try await config.interceptor.shouldRescueRequest(modifiedRequest, error: error) {
-            return try await dataPublisher(for: modifiedRequest)
-          }
+            if try await config.interceptor.shouldRescueRequest(modifiedRequest, error: error) {
+                return try await dataPublisher(for: modifiedRequest)
+            }
 
-          throw error
+            throw error
         }
     }
 
