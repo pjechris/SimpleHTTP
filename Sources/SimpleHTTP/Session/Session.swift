@@ -42,7 +42,7 @@ public class Session {
     /// The request is validated and decoded appropriately on success.
     /// - Returns: a async Output on success, an error otherwise
     public func response<Output: Decodable>(for request: Request<Output>) async throws -> Output {
-        let result = try await dataPublisher(for: request)
+        let result = try await data(for: request)
 
         do {
             let decodedOutput = try config.decoder.decode(Output.self, from: result.data)
@@ -59,13 +59,13 @@ public class Session {
 
     /// Perform asynchronously `request` which has no return value
     public func response(for request: Request<Void>) async throws {
-        let result = try await dataPublisher(for: request)
+        let result = try await data(for: request)
         log(.success(()), for: result.request)
     }
 }
 
 extension Session {
-    private func dataPublisher<Output>(for request: Request<Output>) async throws -> Response<Output> {
+    private func data<Output>(for request: Request<Output>) async throws -> (data: Data, request: Request<Output>) {
         let modifiedRequest = config.interceptor.adaptRequest(request)
         let urlRequest = try modifiedRequest
             .toURLRequest(encoder: config.encoder, relativeTo: baseURL, accepting: config.decoder)
@@ -75,13 +75,13 @@ extension Session {
             
             try result.validate(errorDecoder: config.errorConverter)
 
-            return Response(data: result.data, request: modifiedRequest)
+            return (data: result.data, request: modifiedRequest)
         }
         catch {
             self.log(.failure(error), for: modifiedRequest)
 
             if try await config.interceptor.shouldRescueRequest(modifiedRequest, error: error) {
-                return try await dataPublisher(for: modifiedRequest)
+                return try await data(for: modifiedRequest)
             }
 
             throw error
@@ -91,9 +91,4 @@ extension Session {
     private func log<Output>(_ response: Result<Output, Error>, for request: Request<Output>) {
         config.interceptor.receivedResponse(response, for: request)
     }
-}
-
-private struct Response<Output> {
-    let data: Data
-    let request: Request<Output>
 }
