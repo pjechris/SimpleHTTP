@@ -1,118 +1,95 @@
 import Foundation
-import Combine
 
-/// Primary class of the library used to perform http request using `Request` objects
+/// Primary class of the library used to perform http request using a `Request` object
 public class Session {
-    /// Data returned by a http request
-    public typealias RequestData = URLSession.DataTaskPublisher.Output
-    
-    /// a Publisher emitting `RequestData`
-    public typealias RequestDataPublisher = AnyPublisher<RequestData, Error>
-    
+    /// a function returning a `RequestData` from a `URLRequest`
+    public typealias URLRequestTask = (URLRequest) async throws -> URLDataResponse
+
     let baseURL: URL
     let config: SessionConfiguration
-    /// a closure returning a publisher based for a given `URLRequest`
-    let urlRequestPublisher: (URLRequest) -> RequestDataPublisher
-    
+    /// a closure returning a `DataResponse` from a `URLRequest`
+    let dataTask: URLRequestTask
+
     /// init the class using a `URLSession` instance
     /// - Parameter baseURL: common url for all the requests. Allow to switch environments easily
     /// - Parameter configuration: session configuration to use
     /// - Parameter urlSession: `URLSession` instance to use to make requests.
-    public convenience init(baseURL: URL, configuration: SessionConfiguration = .init(), urlSession: URLSession) {
-        self.init(
-            baseURL: baseURL,
-            configuration: configuration,
-            dataPublisher: urlSession.dataPublisher(for:)
-        )
+    public convenience init(
+        baseURL: URL,
+        configuration: SessionConfiguration = SessionConfiguration(),
+        urlSession: URLSession = .shared
+    ) {
+        self.init(baseURL: baseURL, configuration: configuration, dataTask: { try await urlSession.data(for: $0) })
     }
-    
+
     /// init the class with a base url for request
     /// - Parameter baseURL: common url for all the requests. Allow to switch environments easily
     /// - Parameter configuration: session configuration to use
-    /// - Parameter dataPublisher: publisher used by the class to make http requests. If none provided it default
+    /// - Parameter dataTask: publisher used by the class to make http requests. If none provided it default
     /// to `URLSession.dataPublisher(for:)`
     public init(
         baseURL: URL,
         configuration: SessionConfiguration = SessionConfiguration(),
-        dataPublisher: @escaping (URLRequest) -> RequestDataPublisher = { URLSession.shared.dataPublisher(for: $0) }
+        dataTask: @escaping URLRequestTask
     ) {
         self.baseURL = baseURL
         self.config = configuration
-        self.urlRequestPublisher = dataPublisher
+        self.dataTask = dataTask
     }
-    
-    /// Return a publisher performing request and returning `Output` data
+
+    /// Return a publisher performing `request` and returning `Output`
     ///
     /// The request is validated and decoded appropriately on success.
-    /// - Returns: a Publisher emitting Output on success, an error otherwise
-    public func publisher<Output: Decodable>(for request: Request<Output>) -> AnyPublisher<Output, Error> {
-        dataPublisher(for: request)
-            .receive(on: config.decodingQueue)
-            .map { response -> (output: Result<Output, Error>, request: Request<Output>) in
-                let output = Result {
-                    try self.config.interceptor.adaptOutput(
-                        try self.config.decoder.decode(Output.self, from: response.data),
-                        for: response.request
-                    )
-                }
-                
-                return (output: output, request: response.request)
-            }
-            .handleEvents(receiveOutput: { self.log($0.output, for: $0.request) })
-            .tryMap { try $0.output.get() }
-            .eraseToAnyPublisher()
+    /// - Returns: a async Output on success, an error otherwise
+    public func response<Output: Decodable>(for request: Request<Output>) async throws -> Output {
+        let result = try await dataPublisher(for: request)
+
+        do {
+            let decodedOutput = try config.decoder.decode(Output.self, from: result.data)
+            let output = try config.interceptor.adaptOutput(decodedOutput, for: result.request)
+
+            log(.success(output), for: result.request)
+            return output
+        }
+        catch {
+            log(.failure(error), for: result.request)
+            throw error
+        }
     }
-    
-    /// Return a publisher performing request which has no return value
-    public func publisher(for request: Request<Void>) -> AnyPublisher<Void, Error> {
-        dataPublisher(for: request)
-            .handleEvents(receiveOutput: { self.log(.success(()), for: $0.request) })
-            .map { _ in () }
-            .eraseToAnyPublisher()
+
+    /// Perform asynchronously `request` which has no return value
+    public func response(for request: Request<Void>) async throws {
+        let result = try await dataPublisher(for: request)
+        log(.success(()), for: result.request)
     }
 }
 
 extension Session {
-    private func dataPublisher<Output>(for request: Request<Output>) -> AnyPublisher<Response<Output>, Error> {
+    private func dataPublisher<Output>(for request: Request<Output>) async throws -> Response<Output> {
         let modifiedRequest = config.interceptor.adaptRequest(request)
-        
+        let urlRequest = try modifiedRequest
+            .toURLRequest(encoder: config.encoder, relativeTo: baseURL, accepting: config.decoder)
+
         do {
-            let urlRequest = try modifiedRequest
-                .toURLRequest(encoder: config.encoder, relativeTo: baseURL, accepting: config.decoder)
+            let result = try await dataTask(urlRequest)
             
-            return urlRequestPublisher(urlRequest)
-                .validate(config.errorConverter)
-                .map { Response(data: $0.data, request: modifiedRequest) }
-                .tryCatch { try self.rescue(error: $0, request: request) }
-                .handleEvents(receiveCompletion: { self.logIfFailure($0, for: modifiedRequest) })
-                .eraseToAnyPublisher()
+            try result.validate(errorDecoder: config.errorConverter)
+
+            return Response(data: result.data, request: modifiedRequest)
         }
         catch {
-            return Fail(error: error).eraseToAnyPublisher()
-        }
-    }
-    
-    /// log a request completion
-    private func logIfFailure<Output>(_ completion: Subscribers.Completion<Error>, for request: Request<Output>) {
-        if case .failure(let error) = completion {
-            config.interceptor.receivedResponse(.failure(error), for: request)
-        }
-    }
-    
-    private func log<Output>(_ response: Result<Output, Error>, for request: Request<Output>) {
-        config.interceptor.receivedResponse(response, for: request)
-    }
-    
-    /// try to rescue an error while making a request and retry it when rescue suceeded
-    private func rescue<Output>(error: Error, request: Request<Output>) throws -> AnyPublisher<Response<Output>, Error> {
-        guard let rescue = config.interceptor.rescueRequest(request, error: error) else {
+            self.log(.failure(error), for: modifiedRequest)
+
+            if try await config.interceptor.shouldRescueRequest(modifiedRequest, error: error) {
+                return try await dataPublisher(for: modifiedRequest)
+            }
+
             throw error
         }
-        
-        return rescue
-            .map { self.dataPublisher(for: request) }
-            .switchToLatest()
-            .eraseToAnyPublisher()
+    }
+
+    private func log<Output>(_ response: Result<Output, Error>, for request: Request<Output>) {
+        config.interceptor.receivedResponse(response, for: request)
     }
 }
 

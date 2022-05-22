@@ -12,7 +12,7 @@ public struct SessionConfiguration {
     /// To apply multiple interceptors use `ComposeInterceptor`
     let interceptor: Interceptor
     /// a function decoding data (using `decoder`) as a custom error
-    private(set) var errorConverter: DataErrorConverter?
+    private(set) var errorConverter: DataErrorDecoder?
     
     /// - Parameter encoder to use for request bodies
     /// - Parameter decoder used to decode http responses

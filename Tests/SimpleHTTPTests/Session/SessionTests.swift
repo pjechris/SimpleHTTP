@@ -1,6 +1,6 @@
 import XCTest
 import Combine
-import SimpleHTTP
+@testable import SimpleHTTP
 
 class SessionAsyncTests: XCTestCase {
     let baseURL = URL(string: "https://sessionTests.io")!
@@ -9,7 +9,9 @@ class SessionAsyncTests: XCTestCase {
     
     func test_response_responseIsValid_decodedOutputIsReturned() async throws {
         let expectedResponse = Content(value: "response")
-        let session = sesssionStub()  { (data: try! JSONEncoder().encode(expectedResponse), response: .success) }
+        let session = sesssionStub()  {
+            URLDataResponse(data: try! JSONEncoder().encode(expectedResponse), response: .success)
+        }
         let response = try await session.response(for: Request.test())
         
         XCTAssertEqual(response, expectedResponse)
@@ -20,7 +22,7 @@ class SessionAsyncTests: XCTestCase {
         let interceptor = InterceptorStub()
         let session = sesssionStub(
             interceptor: [interceptor],
-            data: { (data: try! JSONEncoder().encode(output), response: .success) }
+            data: { URLDataResponse(data: try! JSONEncoder().encode(output), response: .success) }
         )
         
         interceptor.adaptResponseMock = { _, _ in
@@ -40,7 +42,7 @@ class SessionAsyncTests: XCTestCase {
         var isRescued = false
         let interceptor = InterceptorStub()
         let session = sesssionStub(interceptor: [interceptor]) {
-            (data: Data(), response: isRescued ? .success : .unauthorized)
+            URLDataResponse(data: Data(), response: isRescued ? .success : .unauthorized)
         }
         
         interceptor.rescueRequestErrorMock = { _ in
@@ -57,7 +59,7 @@ class SessionAsyncTests: XCTestCase {
         let output = Content(value: "hello")
         let interceptor = InterceptorStub()
         let session = sesssionStub(interceptor: [interceptor]) {
-            (data: try! JSONEncoder().encode(output), response: .success)
+            URLDataResponse(data: try! JSONEncoder().encode(output), response: .success)
         }
         
         interceptor.receivedResponseMock = { response, _ in
@@ -73,10 +75,8 @@ class SessionAsyncTests: XCTestCase {
         let session = Session(
             baseURL: baseURL,
             configuration: SessionConfiguration(encoder: encoder, decoder: decoder, dataError: CustomError.self),
-            dataPublisher: { _ in
-                Just((data: try! JSONEncoder().encode(CustomError()), response: .unauthorized))
-                    .setFailureType(to: Error.self)
-                    .eraseToAnyPublisher()
+            dataTask: { _ in
+                URLDataResponse(data: try! JSONEncoder().encode(CustomError()), response: .unauthorized)
             })
         
         do {
@@ -89,15 +89,11 @@ class SessionAsyncTests: XCTestCase {
     }
     
     /// helper to create a session for testing
-    private func sesssionStub(interceptor: CompositeInterceptor = [], data: @escaping () -> Session.RequestData)
+    private func sesssionStub(interceptor: CompositeInterceptor = [], data: @escaping () throws -> URLDataResponse)
     -> Session {
         let config = SessionConfiguration(encoder: encoder, decoder: decoder, interceptors: interceptor)
         
-        return Session(baseURL: baseURL, configuration: config, dataPublisher: { _ in
-            Just(data())
-                .setFailureType(to: Error.self)
-                .eraseToAnyPublisher()
-        })
+        return Session(baseURL: baseURL, configuration: config, dataTask: { _ in try data() })
     }
 }
 

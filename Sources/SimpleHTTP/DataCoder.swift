@@ -21,3 +21,6 @@ public protocol ContentDataDecoder: DataDecoder {
     /// a http content  type
     static var contentType: HTTPContentType { get }
 }
+
+/// A function converting data when a http error occur into a custom error
+public typealias DataErrorDecoder = (Data) throws -> Error
