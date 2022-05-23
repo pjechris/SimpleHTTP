@@ -19,7 +19,7 @@ public class Session {
         configuration: SessionConfiguration = SessionConfiguration(),
         urlSession: URLSession = .shared
     ) {
-        self.init(baseURL: baseURL, configuration: configuration, dataTask: { try await urlSession.data(for: $0) })
+        self.init(baseURL: baseURL, configuration: configuration, dataTask: { try await urlSession.data(from: $0) })
     }
 
     /// init the class with a base url for request
@@ -45,11 +45,13 @@ public class Session {
         let result = try await data(for: request)
 
         do {
-            let decodedOutput = try config.decoder.decode(Output.self, from: result.data)
-            let output = try config.interceptor.adaptOutput(decodedOutput, for: result.request)
+            let response = try result
+                .data
+                .decoded(Output.self, decoder: config.decoder)
+                .map { try config.interceptor.adaptOutput($0, for: result.request) }
 
-            log(.success(output), for: result.request)
-            return output
+            log(.success(response.output), for: result.request)
+            return response.output
         }
         catch {
             log(.failure(error), for: result.request)
@@ -65,24 +67,24 @@ public class Session {
 }
 
 extension Session {
-    private func data<Output>(for request: Request<Output>) async throws -> (data: Data, request: Request<Output>) {
+    private func data<Output>(for request: Request<Output>) async throws
+    -> (request: Request<Output>, data: Response<Data>) {
         let modifiedRequest = config.interceptor.adaptRequest(request)
         let urlRequest = try modifiedRequest
             .toURLRequest(encoder: config.encoder, relativeTo: baseURL, accepting: config.decoder)
 
         do {
-            let result = try await dataTask(urlRequest)
+            let response = try await dataTask(urlRequest)
+                .validate(errorDecoder: config.errorConverter)
             
-            try result.validate(errorDecoder: config.errorConverter)
-
-            return (data: result.data, request: modifiedRequest)
+            return (request: modifiedRequest, data: response)
         }
         catch {
-            self.log(.failure(error), for: modifiedRequest)
-
             if try await config.interceptor.shouldRescueRequest(modifiedRequest, error: error) {
                 return try await data(for: modifiedRequest)
             }
+            
+            self.log(.failure(error), for: modifiedRequest)
 
             throw error
         }
