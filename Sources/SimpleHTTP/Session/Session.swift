@@ -42,6 +42,11 @@ public class Session {
     /// The request is validated and decoded appropriately on success.
     /// - Returns: a async Output on success, an error otherwise
     public func response<Output: Decodable>(for request: Request<Output>) async throws -> Output {
+        try await response(for: request).output
+    }
+    
+    @_disfavoredOverload
+    public func response<Output: Decodable>(for request: Request<Output>) async throws -> Response<Output> {
         let result = try await data(for: request)
 
         do {
@@ -51,18 +56,25 @@ public class Session {
                 .map { try config.interceptor.adaptOutput($0, for: result.request) }
 
             log(.success(response.output), for: result.request)
-            return response.output
+            return response
         }
         catch {
             log(.failure(error), for: result.request)
             throw error
         }
     }
+    
+    @_disfavoredOverload
+    public func response(for request: Request<Void>) async throws {
+        try await response(for: request).output
+    }
 
     /// Perform asynchronously `request` which has no return value
-    public func response(for request: Request<Void>) async throws {
+    public func response(for request: Request<Void>) async throws -> Response<Void> {
         let result = try await data(for: request)
         log(.success(()), for: result.request)
+        
+        return result.data.map { _ in () }
     }
 }
 
