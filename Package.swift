@@ -24,6 +24,11 @@ let package = Package(
             dependencies: []),
         .testTarget(
             name: "SimpleHTTPTests",
-            dependencies: ["SimpleHTTP"]),
+            dependencies: ["SimpleHTTP"],
+            resources:  [
+                .copy("Ressources/Images/swift.png"),
+                .copy("Ressources/Images/swiftUI.png")
+            ]
+        ),
     ]
 )
