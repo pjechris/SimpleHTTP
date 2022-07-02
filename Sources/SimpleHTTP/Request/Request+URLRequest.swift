@@ -27,7 +27,12 @@ extension Request {
         urlRequest.setHeaders(headers)
         
         if let body = body {
-            try urlRequest.encodeBody(body, encoder: encoder)
+            switch body {
+            case .encodable(let body):
+                try urlRequest.encodeBody(body, encoder: encoder)
+            case .multipart(let multipart):
+                try urlRequest.multipartBody(multipart)
+            }
         }
         
         return urlRequest
