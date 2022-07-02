@@ -56,6 +56,62 @@ A few words about Session:
 - You can skip encoder and decoder if you use JSON
 - You can provide a custom `URLSession` instance if ever needed
 
+## Send a body
+
+### Encodable
+
+You we build your request by sending your `body`  to construct it:
+
+```swift
+struct UserBody: Encodable {}
+
+extension Request {
+  static func login(_ body: UserBody) -> Self where Output == LoginResponse {
+    .post("login", body: .encodable(body))
+  }
+}
+```
+
+We defined a `login(_:)` request which will request login endpoint by sending a `UserBody` and waiting for a `LoginResponse`
+
+### Multipart
+
+You we build 2 request:
+
+- send an `URL`
+- send a `Data`
+
+```swift
+extension Request {
+    static func send(audio: URL) throws -> Self where Output == SendAudioResponse {
+    var multipart = MultipartFormData()
+    try multipart.add(url: audio, name: "define_your_name")
+    return .post("sendAudio", body: .multipart(multipart))
+  }
+
+  static func send(audio: Data) throws -> Self where Output == SendAudioResponse {
+    var multipart = MultipartFormData()
+    try multipartFormData.add(data: data, name: "your_name", fileName: "your_fileName", mimeType: "right_mimeType")
+      return .post("sendAudio", body: .multipart(multipart))
+  }
+}
+```
+
+We defined the 2  `send(audio:)` requests which will request `sendAudio` endpoint by sending an `URL` or a `Data` and waiting for a `SendAudioResponse`
+
+We can add multiple `Data`/`URL` to the multipart
+
+```swift
+extension Request {
+  static func send(audio: URL, image: Data) throws -> Self where Output == SendAudioImageResponse {
+    var multipart = MultipartFormData()
+    try multipart.add(url: audio, name: "define_your_name")
+    try multipartFormData.add(data: image, name: "your_name", fileName: "your_fileName", mimeType: "right_mimeType")
+    return .post("sendAudioImage", body: .multipart(multipart))
+  }
+}
+```
+
 ## Interceptor
 
 Protocol `Interceptor` enable powerful request interceptions. This include authentication, logging, request retrying, etc...
