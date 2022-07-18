@@ -48,7 +48,7 @@ enum Boundary {
     }
 }
 
-class BodyPart {
+struct BodyPart {
 
     let headers: [Header]
     let stream: InputStream

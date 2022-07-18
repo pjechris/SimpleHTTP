@@ -23,7 +23,8 @@ class MultipartFormDataEncoderTests: XCTestCase {
         let expectedData = Data(expectedString.utf8)
 
         // When
-        let encodedData = try MultipartFormDataEncoder(body: multipart).encode()
+        var encoder = MultipartFormDataEncoder(body: multipart)
+        let encodedData = try encoder.encode()
 
         // Then
         XCTAssertEqual(encodedData, expectedData)
@@ -55,7 +56,8 @@ class MultipartFormDataEncoderTests: XCTestCase {
         )
         let expectedData = Data(expectedString.utf8)
 
-        let encodedData = try MultipartFormDataEncoder(body: multipart).encode()
+        var encoder = MultipartFormDataEncoder(body: multipart)
+        let encodedData = try encoder.encode()
 
         XCTAssertEqual(encodedData, expectedData)
     }
@@ -79,7 +81,8 @@ class MultipartFormDataEncoderTests: XCTestCase {
         expectedData.append(try Data(contentsOf: url))
         expectedData.append(Boundary.data(for: .final, boundary: boundary))
 
-        let encodedData = try MultipartFormDataEncoder(body: multipart).encode()
+        var encoder = MultipartFormDataEncoder(body: multipart)
+        let encodedData = try encoder.encode()
 
         XCTAssertEqual(encodedData, expectedData)
     }
@@ -114,7 +117,8 @@ class MultipartFormDataEncoderTests: XCTestCase {
         expectedData.append(try Data(contentsOf: url2))
         expectedData.append(Boundary.data(for: .final, boundary: boundary))
 
-        let encodedData = try MultipartFormDataEncoder(body: multipart).encode()
+        var encoder = MultipartFormDataEncoder(body: multipart)
+        let encodedData = try encoder.encode()
 
         XCTAssertEqual(encodedData, expectedData)
     }
@@ -149,7 +153,8 @@ class MultipartFormDataEncoderTests: XCTestCase {
         expectedData.append(try Data(contentsOf: url))
         expectedData.append(Boundary.data(for: .final, boundary: boundary))
 
-        let encodedData = try MultipartFormDataEncoder(body: multipart).encode()
+        var encoder = MultipartFormDataEncoder(body: multipart)
+        let encodedData = try encoder.encode()
 
         XCTAssertEqual(encodedData, expectedData)
     }

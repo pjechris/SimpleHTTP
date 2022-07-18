@@ -17,14 +17,21 @@ struct MultipartFormDataEncoder {
         self.bodyParts = body.bodyParts
     }
 
-    func encode() throws -> Data {
+    mutating func encode() throws -> Data {
         var encoded = Data()
 
-        bodyParts.first?.hasInitialBoundary = true
-        bodyParts.last?.hasFinalBoundary = true
+        if var first = bodyParts.first {
+          first.hasInitialBoundary = true
+          bodyParts[0] = first
+        }
+
+        if var last = bodyParts.last {
+          last.hasFinalBoundary = true
+          bodyParts[bodyParts.count - 1] = last
+        }
 
         for bodyPart in bodyParts {
-            encoded.append(try encodeBodyPart(bodyPart))
+          encoded.append(try encodeBodyPart(bodyPart))
         }
 
         return encoded
