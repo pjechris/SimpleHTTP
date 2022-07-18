@@ -60,7 +60,7 @@ A few words about Session:
 
 ### Encodable
 
-You we build your request by sending your `body`  to construct it:
+You will build your request by sending your `body`  to construct it:
 
 ```swift
 struct UserBody: Encodable {}
@@ -76,14 +76,14 @@ We defined a `login(_:)` request which will request login endpoint by sending a 
 
 ### Multipart
 
-You we build 2 request:
+You we build 2 requests:
 
-- send an `URL`
+- send `URL`
 - send a `Data`
 
 ```swift
 extension Request {
-    static func send(audio: URL) throws -> Self where Output == SendAudioResponse {
+  static func send(audio: URL) throws -> Self where Output == SendAudioResponse {
     var multipart = MultipartFormData()
     try multipart.add(url: audio, name: "define_your_name")
     return .post("sendAudio", body: .multipart(multipart))
@@ -92,7 +92,7 @@ extension Request {
   static func send(audio: Data) throws -> Self where Output == SendAudioResponse {
     var multipart = MultipartFormData()
     try multipartFormData.add(data: data, name: "your_name", fileName: "your_fileName", mimeType: "right_mimeType")
-      return .post("sendAudio", body: .multipart(multipart))
+    return .post("sendAudio", body: .multipart(multipart))
   }
 }
 ```
