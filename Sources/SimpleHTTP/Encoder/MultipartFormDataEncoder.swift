@@ -2,7 +2,7 @@ import Foundation
 
 struct MultipartFormDataEncoder {
 
-    private let boundary: String
+    let boundary: String
     private var bodyParts: [BodyPart]
 
     //

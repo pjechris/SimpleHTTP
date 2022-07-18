@@ -91,7 +91,7 @@ extension Request {
 
   static func send(audio: Data) throws -> Self where Output == SendAudioResponse {
     var multipart = MultipartFormData()
-    try multipartFormData.add(data: data, name: "your_name", fileName: "your_fileName", mimeType: "right_mimeType")
+    try multipart.add(data: data, name: "your_name", fileName: "your_fileName", mimeType: "right_mimeType")
     return .post("sendAudio", body: .multipart(multipart))
   }
 }
@@ -106,7 +106,7 @@ extension Request {
   static func send(audio: URL, image: Data) throws -> Self where Output == SendAudioImageResponse {
     var multipart = MultipartFormData()
     try multipart.add(url: audio, name: "define_your_name")
-    try multipartFormData.add(data: image, name: "your_name", fileName: "your_fileName", mimeType: "right_mimeType")
+    try multipart.add(data: image, name: "your_name", fileName: "your_fileName", mimeType: "right_mimeType")
     return .post("sendAudioImage", body: .multipart(multipart))
   }
 }

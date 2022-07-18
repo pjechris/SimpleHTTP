@@ -19,14 +19,14 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(request.httpMethod, "POST")
     }
 
-    func test_toURLRequest_itEncodeBody() throws {
+    func test_toURLRequest_EncodeBody() throws {
       let request = try Request<Void>.post(TestEndpoint.test, body: .encodable(Body()))
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
 
       XCTAssertEqual(request.httpBody, try JSONEncoder().encode(Body()))
     }
 
-    func test_toURLRequest_itMultipartBody() throws {
+    func test_toURLRequest_encodeMultipartBody() throws {
       let crlf = EncodingCharacters.crlf
       let boundary = "boundary"
       var multipart = MultipartFormData(boundary: boundary)
@@ -52,7 +52,7 @@ class RequestTests: XCTestCase {
       XCTAssertEqual(request.httpBody, body)
     }
 
-    func test_toURLRequest_bodyIsEncodable_itFillDefaultHeaders() throws {
+    func test_toURLRequest_bodyIsEncodable_FillDefaultHeaders() throws {
       let request = try Request<Void>.post(TestEndpoint.test, body: .encodable(Body()))
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
 
@@ -69,7 +69,7 @@ class RequestTests: XCTestCase {
       let request = try Request<Void>.post(TestEndpoint.test, body: .multipart(multipart))
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
 
-      XCTAssertEqual(request.allHTTPHeaderFields?["Content-Type"], multipart.contentType.value)
+      XCTAssertEqual(request.allHTTPHeaderFields?["Content-Type"], HTTPContentType.multipart(boundary: multipart.boundary).value)
     }
     
 }

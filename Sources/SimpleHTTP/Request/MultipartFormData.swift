@@ -75,10 +75,6 @@ public struct MultipartFormData {
     let fileManager: FileManager
     var bodyParts = [BodyPart]()
 
-    var contentType: HTTPContentType {
-        .multipart(boundary: boundary)
-    }
-
     /// Creates an instance
     ///
     /// - Parameters:

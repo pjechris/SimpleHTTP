@@ -5,15 +5,6 @@ class MultipartFormDataTest: XCTestCase {
 
   let crlf = EncodingCharacters.crlf
 
-  func test_contentType_contains_boudary() {
-    let boundary = "boundary"
-
-    let multipart = MultipartFormData(boundary: boundary)
-
-    let expectedContentType = HTTPContentType.multipart(boundary: boundary)
-    XCTAssertEqual(multipart.contentType, expectedContentType)
-  }
-
   func test_addData_withoutFileNameAndMimeType_expectOneBodyPart() throws {
     let boundary = "boundary"
     var multipart = MultipartFormData(boundary: boundary)
@@ -70,8 +61,8 @@ class MultipartFormDataTest: XCTestCase {
     try multipart.add(url: url, name: name)
 
     XCTAssertEqual(multipart.bodyParts.count, 1)
-    let bodyPart1 = try XCTUnwrap(multipart.bodyParts.first)
-    XCTAssertEqual(bodyPart1.headers, expectedHeaders)
+    let bodyPart = try XCTUnwrap(multipart.bodyParts.first)
+    XCTAssertEqual(bodyPart.headers, expectedHeaders)
   }
 
 }

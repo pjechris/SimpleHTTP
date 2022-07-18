@@ -30,7 +30,7 @@ class MultipartFormDataEncoderTests: XCTestCase {
     }
 
 
-    func test_encoding_data_multipleBodyPart() throws {
+    func test_encode_data_multipleBodyPart() throws {
         let boundary = "boundary"
         var multipart = MultipartFormData(boundary: boundary)
 
@@ -60,7 +60,7 @@ class MultipartFormDataEncoderTests: XCTestCase {
         XCTAssertEqual(encodedData, expectedData)
     }
 
-    func test_encoding_url_bodyPart() throws {
+    func test_encode_url_bodyPart() throws {
         let boundary = "boundary"
         var multipart = MultipartFormData(boundary: boundary)
 
@@ -84,7 +84,7 @@ class MultipartFormDataEncoderTests: XCTestCase {
         XCTAssertEqual(encodedData, expectedData)
     }
 
-    func test_encoding_url_multipleBodyPart() throws {
+    func test_encode_url_multipleBodyPart() throws {
         let boundary = "boundary"
         var multipart = MultipartFormData(boundary: boundary)
 
@@ -119,7 +119,7 @@ class MultipartFormDataEncoderTests: XCTestCase {
         XCTAssertEqual(encodedData, expectedData)
     }
 
-    func test_encoding_varryingType_multipleBodyPart() throws {
+    func test_encode_varryingType_multipleBodyPart() throws {
         let boundary = "boundary"
         var multipart = MultipartFormData(boundary: boundary)
 
