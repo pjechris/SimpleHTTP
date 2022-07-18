@@ -180,9 +180,9 @@ public struct MultipartFormData {
     }
 
     private func mimeType(from url: URL) -> String {
-        if #available(iOS 14.0, *) {
+        if #available(iOS 14.0, *), #available(macOS 11.0, *) {
             guard let type = UTType(filenameExtension: url.pathExtension), let mime = type.preferredMIMEType else {
-                return HTTPContentType.octetStream.value
+              return HTTPContentType.octetStream.value
             }
             return mime
         } else {
