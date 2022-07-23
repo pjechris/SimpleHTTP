@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>HTTPError Structure Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Struct/HTTPError" class="dashAnchor"></a>
+    <a title="HTTPError Structure Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (62% documented)</p>
+        <div class="header-right">
+          <form role="search" action="../search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </div>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" alt=""/>
+        HTTPError Structure Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Session.html">Session</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/Body.html">Body</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Method.html">Method</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/QueryValue.html">QueryValue</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Bool.html">Bool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/JSONDecoder.html">JSONDecoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/JSONEncoder.html">JSONEncoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/URLRequest.html">URLRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/URLResponse.html">URLResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/URLSession.html">URLSession</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/ContentDataDecoder.html">ContentDataDecoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ContentDataEncoder.html">ContentDataEncoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/DataDecoder.html">DataDecoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/DataEncoder.html">DataEncoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Path.html">Path</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/QueryParam.html">QueryParam</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/RequestInterceptor.html">RequestInterceptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ResponseInterceptor.html">ResponseInterceptor</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/CompositeInterceptor.html">CompositeInterceptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HTTPContentType.html">HTTPContentType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HTTPError.html">HTTPError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HTTPHeader.html">HTTPHeader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/MultipartFormData.html">MultipartFormData</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/MultipartFormData/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Request.html">Request</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SessionConfiguration.html">SessionConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/URLDataResponse.html">URLDataResponse</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:10SimpleHTTP16DataErrorDecodera">DataErrorDecoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:10SimpleHTTP16HTTPHeaderFieldsa">HTTPHeaderFields</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:10SimpleHTTP11Interceptora">Interceptor</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>HTTPError</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">HTTPError</span> <span class="p">:</span> <span class="kt">Error</span><span class="p">,</span> <span class="kt">Equatable</span><span class="p">,</span> <span class="kt">ExpressibleByIntegerLiteral</span></code></pre>
+
+                </div>
+              </div>
+            <p>An error generated by a HTTP response</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP9HTTPErrorV10statusCodeSivp"></a>
+                    <a name="//apple_ref/swift/Property/statusCode" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP9HTTPErrorV10statusCodeSivp">statusCode</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">statusCode</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP9HTTPErrorV10statusCodeACSi_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(statusCode:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP9HTTPErrorV10statusCodeACSi_tcfc">init(statusCode:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">statusCode</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:s27ExpressibleByIntegerLiteralP07integerD0x0cD4TypeQz_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(integerLiteral:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:s27ExpressibleByIntegerLiteralP07integerD0x0cD4TypeQz_tcfc">init(integerLiteral:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">integerLiteral</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">IntegerLiteralType</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP9HTTPErrorV10badRequestACvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/badRequest" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP9HTTPErrorV10badRequestACvpZ">badRequest</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="k">let</span> <span class="nv">badRequest</span><span class="p">:</span> <span class="err">`</span><span class="k">Self</span><span class="err">`</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP9HTTPErrorV12unauthorizedACvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/unauthorized" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP9HTTPErrorV12unauthorizedACvpZ">unauthorized</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="k">let</span> <span class="nv">unauthorized</span><span class="p">:</span> <span class="err">`</span><span class="k">Self</span><span class="err">`</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP9HTTPErrorV9forbiddenACvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/forbidden" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP9HTTPErrorV9forbiddenACvpZ">forbidden</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Request contained valid data and was understood by the server, but the server is refusing action</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="k">let</span> <span class="nv">forbidden</span><span class="p">:</span> <span class="err">`</span><span class="k">Self</span><span class="err">`</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP9HTTPErrorV8notFoundACvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/notFound" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP9HTTPErrorV8notFoundACvpZ">notFound</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="k">let</span> <span class="nv">notFound</span><span class="p">:</span> <span class="err">`</span><span class="k">Self</span><span class="err">`</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP9HTTPErrorV14requestTimeoutACvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/requestTimeout" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP9HTTPErrorV14requestTimeoutACvpZ">requestTimeout</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="k">let</span> <span class="nv">requestTimeout</span><span class="p">:</span> <span class="err">`</span><span class="k">Self</span><span class="err">`</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP9HTTPErrorV11serverErrorACvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/serverError" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP9HTTPErrorV11serverErrorACvpZ">serverError</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Generic error message when an unexpected condition was encountered and no more specific message is suitable</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="k">let</span> <span class="nv">serverError</span><span class="p">:</span> <span class="err">`</span><span class="k">Self</span><span class="err">`</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP9HTTPErrorV10badGatewayACvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/badGateway" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP9HTTPErrorV10badGatewayACvpZ">badGateway</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Server was acting as a gateway or proxy and received an invalid response from the upstream server</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="k">let</span> <span class="nv">badGateway</span><span class="p">:</span> <span class="err">`</span><span class="k">Self</span><span class="err">`</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP9HTTPErrorV18serviceUnavailableACvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/serviceUnavailable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP9HTTPErrorV18serviceUnavailableACvpZ">serviceUnavailable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Server cannot handle the request (because it is overloaded or down for maintenance)</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="k">let</span> <span class="nv">serviceUnavailable</span><span class="p">:</span> <span class="err">`</span><span class="k">Self</span><span class="err">`</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP9HTTPErrorV14gatewayTimeoutACvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/gatewayTimeout" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP9HTTPErrorV14gatewayTimeoutACvpZ">gatewayTimeout</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Server was acting as a gateway or proxy and did not receive a timely response from the upstream server</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">static</span> <span class="k">let</span> <span class="nv">gatewayTimeout</span><span class="p">:</span> <span class="err">`</span><span class="k">Self</span><span class="err">`</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2022 <a class="link" href="" target="_blank" rel="external noopener"></a>. All rights reserved. (Last updated: 2022-07-23)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</html>

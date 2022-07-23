@@ -1,0 +1,369 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/DataCoder.swift",
+      "line": 5,
+      "symbol": "DataEncoder.encode(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/DataCoder.swift",
+      "line": 10,
+      "symbol": "DataDecoder.decode(_:from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Foundation/URLRequest/URLRequest+Encode.swift",
+      "line": 8,
+      "symbol": "URLRequest.encodedBody(_:encoder:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Foundation/URLRequest/URLRequest+Multipart.swift",
+      "line": 8,
+      "symbol": "URLRequest.multipartBody(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Foundation/URLSession+Publisher.swift",
+      "line": 5,
+      "symbol": "URLSession.data(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Foundation/URLSession+Publisher.swift",
+      "line": 22,
+      "symbol": "URLSession.data(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/HTTP/HTTPContentType.swift",
+      "line": 7,
+      "symbol": "HTTPContentType.init(value:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/HTTP/HTTPContentType.swift",
+      "line": 17,
+      "symbol": "HTTPContentType.json",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/HTTP/HTTPContentType.swift",
+      "line": 18,
+      "symbol": "HTTPContentType.octetStream",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/HTTP/HTTPContentType.swift",
+      "line": 19,
+      "symbol": "HTTPContentType.multipart(boundary:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/HTTP/HTTPError.swift",
+      "line": 5,
+      "symbol": "HTTPError.statusCode",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/HTTP/HTTPError.swift",
+      "line": 7,
+      "symbol": "HTTPError.init(statusCode:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/HTTP/HTTPError.swift",
+      "line": 17,
+      "symbol": "HTTPError.badRequest",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/HTTP/HTTPError.swift",
+      "line": 19,
+      "symbol": "HTTPError.unauthorized",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/HTTP/HTTPError.swift",
+      "line": 24,
+      "symbol": "HTTPError.notFound",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/HTTP/HTTPError.swift",
+      "line": 26,
+      "symbol": "HTTPError.requestTimeout",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/HTTP/HTTPHeader.swift",
+      "line": 8,
+      "symbol": "HTTPHeader.key",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/HTTP/HTTPHeader.swift",
+      "line": 16,
+      "symbol": "HTTPHeader.accept",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/HTTP/HTTPHeader.swift",
+      "line": 17,
+      "symbol": "HTTPHeader.authentication",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/HTTP/HTTPHeader.swift",
+      "line": 18,
+      "symbol": "HTTPHeader.contentType",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/HTTP/HTTPHeader.swift",
+      "line": 19,
+      "symbol": "HTTPHeader.contentDisposition",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Interceptor/Interceptor.swift",
+      "line": 4,
+      "symbol": "Interceptor",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/MultipartFormData.swift",
+      "line": 201,
+      "symbol": "MultipartFormData.Error",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/MultipartFormData.swift",
+      "line": 202,
+      "symbol": "MultipartFormData.Error.fileSizeNotAvailable(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/MultipartFormData.swift",
+      "line": 203,
+      "symbol": "MultipartFormData.Error.inputStreamCreationFailed(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Path.swift",
+      "line": 5,
+      "symbol": "Path.path",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Path.swift",
+      "line": 9,
+      "symbol": "Path.path",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Path.swift",
+      "line": 13,
+      "symbol": "String.path",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/QueryParam.swift",
+      "line": 11,
+      "symbol": "QueryValue.single(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/QueryParam.swift",
+      "line": 12,
+      "symbol": "QueryValue.collection(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Request.swift",
+      "line": 3,
+      "symbol": "Method",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Request.swift",
+      "line": 4,
+      "symbol": "Method.get",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Request.swift",
+      "line": 5,
+      "symbol": "Method.post",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Request.swift",
+      "line": 6,
+      "symbol": "Method.put",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Request.swift",
+      "line": 7,
+      "symbol": "Method.delete",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Request.swift",
+      "line": 10,
+      "symbol": "Body",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Request.swift",
+      "line": 11,
+      "symbol": "Body.encodable(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Request.swift",
+      "line": 12,
+      "symbol": "Body.multipart(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Request.swift",
+      "line": 22,
+      "symbol": "Request.method",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Request.swift",
+      "line": 23,
+      "symbol": "Request.body",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Request.swift",
+      "line": 24,
+      "symbol": "Request.query",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Request.swift",
+      "line": 25,
+      "symbol": "Request.headers",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Request.swift",
+      "line": 27,
+      "symbol": "Request.get(_:query:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Request.swift",
+      "line": 31,
+      "symbol": "Request.post(_:body:query:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Request.swift",
+      "line": 36,
+      "symbol": "Request.put(_:body:query:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Request/Request.swift",
+      "line": 41,
+      "symbol": "Request.delete(_:query:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Response/DataResponse.swift",
+      "line": 3,
+      "symbol": "URLDataResponse",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Response/DataResponse.swift",
+      "line": 4,
+      "symbol": "URLDataResponse.data",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Response/DataResponse.swift",
+      "line": 5,
+      "symbol": "URLDataResponse.response",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Response/DataResponse.swift",
+      "line": 8,
+      "symbol": "URLDataResponse",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Response/DataResponse.swift",
+      "line": 9,
+      "symbol": "URLDataResponse.validate(errorDecoder:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/runner/work/SimpleHTTP/SimpleHTTP/Sources/SimpleHTTP/Session/Session+Combine.swift",
+      "line": 27,
+      "symbol": "Session.publisher(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/runner/work/SimpleHTTP/SimpleHTTP"
+}

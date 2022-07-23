@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Request Structure Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Struct/Request" class="dashAnchor"></a>
+    <a title="Request Structure Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (62% documented)</p>
+        <div class="header-right">
+          <form role="search" action="../search.json">
+            <input type="text" placeholder="Search documentation" data-typeahead>
+          </form>
+        </div>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" alt=""/>
+        Request Structure Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Session.html">Session</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/Body.html">Body</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/Method.html">Method</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/QueryValue.html">QueryValue</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Bool.html">Bool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Int.html">Int</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/JSONDecoder.html">JSONDecoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/JSONEncoder.html">JSONEncoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/URLRequest.html">URLRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/URLResponse.html">URLResponse</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/URLSession.html">URLSession</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/ContentDataDecoder.html">ContentDataDecoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ContentDataEncoder.html">ContentDataEncoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/DataDecoder.html">DataDecoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/DataEncoder.html">DataEncoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Path.html">Path</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/QueryParam.html">QueryParam</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/RequestInterceptor.html">RequestInterceptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ResponseInterceptor.html">ResponseInterceptor</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/CompositeInterceptor.html">CompositeInterceptor</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HTTPContentType.html">HTTPContentType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HTTPError.html">HTTPError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/HTTPHeader.html">HTTPHeader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/MultipartFormData.html">MultipartFormData</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/MultipartFormData/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Request.html">Request</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SessionConfiguration.html">SessionConfiguration</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/URLDataResponse.html">URLDataResponse</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:10SimpleHTTP16DataErrorDecodera">DataErrorDecoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:10SimpleHTTP16HTTPHeaderFieldsa">HTTPHeaderFields</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:10SimpleHTTP11Interceptora">Interceptor</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Request</h1>
+              <div class="declaration">
+                <div class="language">
+                  
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Request</span><span class="o">&lt;</span><span class="kt">Output</span><span class="o">&gt;</span></code></pre>
+
+                </div>
+              </div>
+            <p>A Http request expecting an <code>Output</code> response</p>
+
+<p>Highly inspired by <a href="https://swiftwithmajid.com/2021/02/10/building-type-safe-networking-in-swift/">https://swiftwithmajid.com/2021/02/10/building-type-safe-networking-in-swift/</a></p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP7RequestV4pathSSvp"></a>
+                    <a name="//apple_ref/swift/Property/path" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP7RequestV4pathSSvp">path</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>request relative path</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">path</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP7RequestV6methodAA6MethodOvp"></a>
+                    <a name="//apple_ref/swift/Property/method" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP7RequestV6methodAA6MethodOvp">method</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">method</span><span class="p">:</span> <span class="kt"><a href="../Enums/Method.html">Method</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP7RequestV4bodyAA4BodyOSgvp"></a>
+                    <a name="//apple_ref/swift/Property/body" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP7RequestV4bodyAA4BodyOSgvp">body</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">body</span><span class="p">:</span> <span class="kt"><a href="../Enums/Body.html">Body</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP7RequestV5querySDySSAA10QueryParam_pGvp"></a>
+                    <a name="//apple_ref/swift/Property/query" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP7RequestV5querySDySSAA10QueryParam_pGvp">query</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">query</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/QueryParam.html">QueryParam</a></span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP7RequestV7headersSDyAA10HTTPHeaderVSSGvp"></a>
+                    <a name="//apple_ref/swift/Property/headers" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP7RequestV7headersSDyAA10HTTPHeaderVSSGvp">headers</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="k">var</span> <span class="nv">headers</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:10SimpleHTTP16HTTPHeaderFieldsa">HTTPHeaderFields</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP7RequestV3get_5queryACyxGAA4Path_p_SDySSAA10QueryParam_pGtFZ"></a>
+                    <a name="//apple_ref/swift/Method/get(_:query:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP7RequestV3get_5queryACyxGAA4Path_p_SDySSAA10QueryParam_pGtFZ">get(_:<wbr>query:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">get</span><span class="p">(</span><span class="n">_</span> <span class="nv">path</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Path.html">Path</a></span><span class="p">,</span> <span class="nv">query</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/QueryParam.html">QueryParam</a></span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span> <span class="o">-&gt;</span> <span class="kt">Request</span><span class="o">&lt;</span><span class="kt">Output</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP7RequestV4post_4body5queryACyxGAA4Path_p_AA4BodyOSgSDySSAA10QueryParam_pGtFZ"></a>
+                    <a name="//apple_ref/swift/Method/post(_:body:query:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP7RequestV4post_4body5queryACyxGAA4Path_p_AA4BodyOSgSDySSAA10QueryParam_pGtFZ">post(_:<wbr>body:<wbr>query:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">post</span><span class="p">(</span><span class="n">_</span> <span class="nv">path</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Path.html">Path</a></span><span class="p">,</span> <span class="nv">body</span><span class="p">:</span> <span class="kt"><a href="../Enums/Body.html">Body</a></span><span class="p">?,</span> <span class="nv">query</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt"><a href="../Protocols/QueryParam.html">QueryParam</a></span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span>
+<span class="o">-&gt;</span> <span class="k">Self</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP7RequestV3put_4body5queryACyxGAA4Path_p_AA4BodyOSDySSAA10QueryParam_pGtFZ"></a>
+                    <a name="//apple_ref/swift/Method/put(_:body:query:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP7RequestV3put_4body5queryACyxGAA4Path_p_AA4BodyOSDySSAA10QueryParam_pGtFZ">put(_:<wbr>body:<wbr>query:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">put</span><span class="p">(</span><span class="n">_</span> <span class="nv">path</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Path.html">Path</a></span><span class="p">,</span> <span class="nv">body</span><span class="p">:</span> <span class="kt"><a href="../Enums/Body.html">Body</a></span><span class="p">,</span> <span class="nv">query</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span><span class="p">:</span> <span class="kt"><a href="../Protocols/QueryParam.html">QueryParam</a></span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span>
+<span class="o">-&gt;</span> <span class="k">Self</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP7RequestV6delete_5queryACyxGAA4Path_p_SDySSAA10QueryParam_pGtFZ"></a>
+                    <a name="//apple_ref/swift/Method/delete(_:query:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP7RequestV6delete_5queryACyxGAA4Path_p_SDySSAA10QueryParam_pGtFZ">delete(_:<wbr>query:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="nf">delete</span><span class="p">(</span><span class="n">_</span> <span class="nv">path</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Path.html">Path</a></span><span class="p">,</span> <span class="nv">query</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/QueryParam.html">QueryParam</a></span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span> <span class="o">-&gt;</span> <span class="kt">Request</span><span class="o">&lt;</span><span class="kt">Output</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP7RequestV7headersyACyxGSDyAA10HTTPHeaderVSSGF"></a>
+                    <a name="//apple_ref/swift/Method/headers(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP7RequestV7headersyACyxGSDyAA10HTTPHeaderVSSGF">headers(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>add headers to the request</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">headers</span><span class="p">(</span><span class="n">_</span> <span class="nv">newHeaders</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/HTTPHeader.html">HTTPHeader</a></span> <span class="p">:</span> <span class="kt">String</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kt">Request</span><span class="o">&lt;</span><span class="kt">Output</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:10SimpleHTTP7RequestV12toURLRequest7encoder10relativeTo9accepting10Foundation0E0VAA18ContentDataEncoder_p_AH3URLVAA0kL7Decoder_pSgtKF"></a>
+                    <a name="//apple_ref/swift/Method/toURLRequest(encoder:relativeTo:accepting:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:10SimpleHTTP7RequestV12toURLRequest7encoder10relativeTo9accepting10Foundation0E0VAA18ContentDataEncoder_p_AH3URLVAA0kL7Decoder_pSgtKF">toURLRequest(encoder:<wbr>relativeTo:<wbr>accepting:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Transform a Request into a URLRequest</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">toURLRequest</span><span class="p">(</span><span class="nv">encoder</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ContentDataEncoder.html">ContentDataEncoder</a></span><span class="p">,</span> <span class="n">relativeTo</span> <span class="nv">baseURL</span><span class="p">:</span> <span class="kt">URL</span><span class="p">,</span> <span class="nv">accepting</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ContentDataDecoder.html">ContentDataDecoder</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">URLRequest</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>encoder</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the encoder to use to encode the body is present</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>relativeTo</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>the base URL to append to the request path</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>accepting</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>if not nil will be used to set &ldquo;Accept&rdquo; header value</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2022 <a class="link" href="" target="_blank" rel="external noopener"></a>. All rights reserved. (Last updated: 2022-07-23)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external noopener">jazzy ♪♫ v0.14.2</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external noopener">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</html>
