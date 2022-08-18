@@ -23,7 +23,7 @@ extension URL {
 }
 
 extension URLComponents {
-    enum Error: Swift.Error {
+    public enum Error: Swift.Error {
         case invalid(path: String)
         case cannotGenerateURL(components: URLComponents)
     }
