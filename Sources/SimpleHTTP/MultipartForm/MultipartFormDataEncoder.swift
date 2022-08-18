@@ -1,7 +1,6 @@
 import Foundation
 
 struct MultipartFormDataEncoder {
-
     let boundary: String
     private var bodyParts: [BodyPart]
 
