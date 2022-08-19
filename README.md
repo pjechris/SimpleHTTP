@@ -22,16 +22,16 @@ extension Request {
 
 And... voila! We defined a `login(_:)` request which will request login endpoint by sending a `UserBody` and waiting for a `UserResponse`. Now it's time to use it.
 
-You can also use an enum to define your Request path:
+You can declare constant endpoints if needed (refer to Endpoint documentation to see more):
 
 ```swift
-enum MyAppEndpoint: String, Path {
-  case login
+extension Endpoint {
+  static let login: Endpoint = "login"
 }
 
 extension Request {
   static let func login(_ body: UserBody) -> Self where Output == UserResponse {
-    .post(MyAppEndpoint.login, body: body)
+    .post(.login, body: body)
   }
 }
 ```
