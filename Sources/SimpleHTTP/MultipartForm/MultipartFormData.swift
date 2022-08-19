@@ -8,10 +8,8 @@ import CoreServices
 #endif
 
 struct Header: Hashable {
-
     let name: HTTPHeader
     let value: String
-
 }
 
 enum EncodingCharacters {
@@ -49,7 +47,6 @@ enum Boundary {
 }
 
 struct BodyPart {
-
     let headers: [Header]
     let stream: InputStream
     let length: Int
@@ -61,16 +58,13 @@ struct BodyPart {
         self.stream = stream
         self.length = length
     }
-
 }
 
 /// Constructs `multipart/form-data` for uploads within an HTTP or HTTPS body.
 /// We encode the data directly in memory. It's very efficient, but can lead to memory issues if the dataset is too large (eg: a Video)
 ///
 /// `Warning`: A Second approch to encode bigger dataset will be addes later
-
 public struct MultipartFormData {
-
     let boundary: String
     let fileManager: FileManager
     var bodyParts = [BodyPart]()
