@@ -8,7 +8,7 @@ public struct URLDataResponse {
 extension URLDataResponse {
     public func validate(errorDecoder: DataErrorDecoder? = nil) throws {
         do {
-            try response.validateStatusCode()
+            try response.validate()
         }
         catch let error as HTTPError {
             guard let decoder = errorDecoder, !data.isEmpty else {
