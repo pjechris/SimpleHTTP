@@ -1,26 +1,26 @@
 import XCTest
 @testable import SimpleHTTP
 
+extension Endpoint {
+    fileprivate static let test: Endpoint = "test"
+}
+
 class RequestTests: XCTestCase {
-    enum TestEndpoint: String, Path {
-        case test
-    }
-    
     let baseURL = URL(string: "https://google.fr")!
     
     func test_init_withPathAsString() {
-        XCTAssertEqual(Request<Void>.get("hello_world").path, "hello_world")
+        XCTAssertEqual(Request<Void>.get("hello_world").endpoint, "hello_world")
     }
     
     func test_toURLRequest_setHttpMethod() throws {
-        let request = try Request<Void>.post(TestEndpoint.test, body: nil)
+        let request = try Request<Void>.post(.test, body: nil)
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
         
         XCTAssertEqual(request.httpMethod, "POST")
     }
 
     func test_toURLRequest_EncodeBody() throws {
-      let request = try Request<Void>.post(TestEndpoint.test, body: .encodable(Body()))
+      let request = try Request<Void>.post(.test, body: .encodable(Body()))
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
 
       XCTAssertEqual(request.httpBody, try JSONEncoder().encode(Body()))
@@ -34,7 +34,7 @@ class RequestTests: XCTestCase {
       let name = "swift"
       try multipart.add(url: url, name: name)
 
-      let request = try Request<Void>.post(TestEndpoint.test, body: .multipart(multipart))
+      let request = try Request<Void>.post(.test, body: .multipart(multipart))
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
 
       /// We can't use  `XCTAssertEqual(request.httpBody, try multipart.encode)`
@@ -53,7 +53,7 @@ class RequestTests: XCTestCase {
     }
 
     func test_toURLRequest_bodyIsEncodable_FillDefaultHeaders() throws {
-      let request = try Request<Void>.post(TestEndpoint.test, body: .encodable(Body()))
+      let request = try Request<Void>.post(.test, body: .encodable(Body()))
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
 
       XCTAssertEqual(request.allHTTPHeaderFields?["Content-Type"], "application/json")
@@ -66,7 +66,7 @@ class RequestTests: XCTestCase {
       let name = "swift"
       try multipart.add(url: url, name: name)
 
-      let request = try Request<Void>.post(TestEndpoint.test, body: .multipart(multipart))
+      let request = try Request<Void>.post(.test, body: .multipart(multipart))
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
 
       XCTAssertEqual(request.allHTTPHeaderFields?["Content-Type"], HTTPContentType.multipart(boundary: multipart.boundary).value)

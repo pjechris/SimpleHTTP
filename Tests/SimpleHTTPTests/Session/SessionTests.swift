@@ -97,8 +97,8 @@ class SessionAsyncTests: XCTestCase {
     }
 }
 
-private enum Endpoint: String, Path {
-    case test
+private extension Endpoint {
+    static let test: Endpoint = "test"
 }
 
 private struct Content: Codable, Equatable {
@@ -111,11 +111,11 @@ private struct CustomError: Error, Codable, Equatable {
 
 private extension Request {
     static func test() -> Self where Output == Content {
-        .get(Endpoint.test)
+        .get(.test)
     }
     
     static func void() -> Self where Output == Void {
-        .get(Endpoint.test)
+        .get(.test)
     }
 }
 
