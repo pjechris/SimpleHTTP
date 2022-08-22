@@ -32,9 +32,5 @@ public struct Endpoint: Equatable, ExpressibleByStringLiteral {
     public init(stringLiteral value: StringLiteralType) {
         self.init(path: value)
     }
-
-    public static func ==(lhs: Endpoint, rhs: String) -> Bool {
-        lhs.path == rhs
-    }
 }
 
