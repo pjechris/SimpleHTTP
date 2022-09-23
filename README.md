@@ -67,7 +67,7 @@ struct UserBody: Encodable {}
 
 extension Request {
   static func login(_ body: UserBody) -> Self where Output == LoginResponse {
-    .post("login", body: .encodable(body))
+    .post("login", body: body)
   }
 }
 ```
@@ -86,13 +86,13 @@ extension Request {
   static func send(audio: URL) throws -> Self where Output == SendAudioResponse {
     var multipart = MultipartFormData()
     try multipart.add(url: audio, name: "define_your_name")
-    return .post("sendAudio", body: .multipart(multipart))
+    return .post("sendAudio", body: multipart)
   }
 
   static func send(audio: Data) throws -> Self where Output == SendAudioResponse {
     var multipart = MultipartFormData()
     try multipart.add(data: data, name: "your_name", fileName: "your_fileName", mimeType: "right_mimeType")
-    return .post("sendAudio", body: .multipart(multipart))
+    return .post("sendAudio", body: multipart)
   }
 }
 ```
@@ -107,7 +107,7 @@ extension Request {
     var multipart = MultipartFormData()
     try multipart.add(url: audio, name: "define_your_name")
     try multipart.add(data: image, name: "your_name", fileName: "your_fileName", mimeType: "right_mimeType")
-    return .post("sendAudioImage", body: .multipart(multipart))
+    return .post("sendAudioImage", body: multipart)
   }
 }
 ```

@@ -20,7 +20,7 @@ class RequestTests: XCTestCase {
     }
     
     func test_toURLRequest_encodeBody() throws {
-        let request = try Request<Void>.post(.test, body: .encodable(Body()))
+        let request = try Request<Void>.post(.test, body: Body())
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
         
         XCTAssertEqual(request.httpBody, try JSONEncoder().encode(Body()))
@@ -62,7 +62,7 @@ class RequestTests: XCTestCase {
     }
     
     func test_toURLRequest_bodyIsEncodable_fillContentTypeHeader() throws {
-        let request = try Request<Void>.post(.test, body: .encodable(Body()))
+        let request = try Request<Void>.post(.test, body: Body())
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
         
         XCTAssertEqual(request.allHTTPHeaderFields?["Content-Type"], "application/json")
