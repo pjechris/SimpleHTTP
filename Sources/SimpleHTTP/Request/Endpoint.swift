@@ -36,5 +36,9 @@ public struct Endpoint: Equatable, ExpressibleByStringLiteral, ExpressibleByStri
     public init(stringInterpolation: DefaultStringInterpolation) {
         self.init(path: stringInterpolation.description)
     }
+    
+    public static func ==(lhs: Endpoint, rhs: String) -> Bool {
+        lhs.path == rhs
+    }
 }
 
