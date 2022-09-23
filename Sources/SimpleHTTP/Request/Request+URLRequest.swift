@@ -24,6 +24,7 @@ extension Request {
         var urlRequest = try URLRequest(url: URL(from: self))
         
         urlRequest.httpMethod = method.rawValue.uppercased()
+        urlRequest.cachePolicy = cachePolicy
         urlRequest.setHeaders(headers)
         
         if let body = body {

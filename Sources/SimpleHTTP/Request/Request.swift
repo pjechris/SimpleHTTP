@@ -21,6 +21,7 @@ public struct Request<Output> {
     public let method: Method
     public let body: Body?
     public let query: [String: QueryParam]
+    public private(set) var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
     public private(set) var headers: HTTPHeaderFields = [:]
     
     /// Creates a request suitable for a HTTP GET
@@ -47,7 +48,7 @@ public struct Request<Output> {
     }
     
     /// Creates a request suitable for a HTTP PUT with a `Body` body
-    public static func put(_ endpoint: Endpoint, body: Body, query: [String: QueryParam] = [:])
+    public static func put(_ endpoint: Endpoint, body: Body?, query: [String: QueryParam] = [:])
     -> Self {
         self.init(endpoint: endpoint, method: .put, query: query, body: body)
     }
@@ -76,11 +77,20 @@ public struct Request<Output> {
         self.query = query
     }
     
-    /// add headers to the request
+    /// Adds headers to the request
     public func headers(_ newHeaders: [HTTPHeader: String]) -> Self {
         var request = self
         
         request.headers.merge(newHeaders) { $1 }
+        
+        return request
+    }
+    
+    /// Configures request cache policy
+    public func cachePolicy(_ policy: URLRequest.CachePolicy) -> Self {
+        var request = self
+        
+        request.cachePolicy = policy
         
         return request
     }

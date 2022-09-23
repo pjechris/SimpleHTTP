@@ -19,11 +19,20 @@ class RequestTests: XCTestCase {
         XCTAssertEqual(request.httpMethod, "POST")
     }
 
-    func test_toURLRequest_EncodeBody() throws {
+    func test_toURLRequest_encodeBody() throws {
       let request = try Request<Void>.post(.test, body: .encodable(Body()))
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
 
       XCTAssertEqual(request.httpBody, try JSONEncoder().encode(Body()))
+    }
+    
+    func test_toURLRequest_setCachePolicy() throws {
+        let request = try Request<Void>
+              .get(.test)
+              .cachePolicy(.returnCacheDataDontLoad)
+              .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
+
+        XCTAssertEqual(request.cachePolicy, .returnCacheDataDontLoad)
     }
 
     func test_toURLRequest_encodeMultipartBody() throws {
@@ -52,14 +61,14 @@ class RequestTests: XCTestCase {
       XCTAssertEqual(request.httpBody, body)
     }
 
-    func test_toURLRequest_bodyIsEncodable_FillDefaultHeaders() throws {
+    func test_toURLRequest_bodyIsEncodable_fillContentTypeHeader() throws {
       let request = try Request<Void>.post(.test, body: .encodable(Body()))
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
 
       XCTAssertEqual(request.allHTTPHeaderFields?["Content-Type"], "application/json")
     }
 
-    func test_toURLRequest_bodyIsMultipart_itFillDefaultHeaders() throws {
+    func test_toURLRequest_bodyIsMultipart_fillContentTypeHeader() throws {
       let boundary = "boundary"
       var multipart = MultipartFormData(boundary: boundary)
       let url = try url(forResource: "swift", withExtension: "png")
