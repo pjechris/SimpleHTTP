@@ -28,7 +28,7 @@ The package come with 2 modules:
 
 ### Building a request
 
-You make requests by creating `Request` objects. You can either create them manually or provide static definition by extending `Request`:
+You make requests by creating [`Request`](https://pjechris.github.io/SimpleHTTP/Structs/Request.html) objects. You can either create them manually or provide static definition by extending `Request`:
 
 ```swift
 extension Request {
@@ -44,7 +44,7 @@ This defines a `Request.login(_:)` method which create a request targeting "logi
 
 You can use your request along `URLSession` by converting it into a `URLRequest` by calling `request.toURLRequest(encoder:relativeTo:accepting)`.
 
-You can also use a `Session` object. `Session` is somewhat similar to `URLSession` but providing additional functionalities:
+You can also use a `Session` object. [`Session`](https://pjechris.github.io/SimpleHTTP/Classes/Session.html) is somewhat similar to `URLSession` but providing additional functionalities:
 
 - encoder/decoder for all requests
 - error handling
@@ -91,7 +91,7 @@ extension Request {
 
 ### Multipart
 
-You can create multipart content from two kind of content
+You can create [multipart](https://pjechris.github.io/SimpleHTTP/Structs/MultipartFormData.html) content from two kind of content
 
 - From a disk file (using a `URL`)
 - From raw content (using `Data`)
@@ -160,14 +160,14 @@ When using Session you can add automatic behavior to your requests/responses usi
 
 ### `RequestInterceptor`
 
-`RequestInterceptor` allows to adapt and/or retry a request:
+[`RequestInterceptor`](https://pjechris.github.io/SimpleHTTP/Protocols/RequestInterceptor.html) allows to adapt and/or retry a request:
 
 - `adaptRequest` method is called before making a request allowing you to transform it adding headers, changing path, ...
 - `rescueRequestError` is called whenever the request fail. You'll have a chance to retry the request. This can be used to re-authenticate the user for instance
 
 ### `ResponseInterceptor`
 
-`ResponseInterceptor` is dedicated to intercept and server responses:
+[`ResponseInterceptor`](https://pjechris.github.io/SimpleHTTP/Protocols/ResponseInterceptor.html) is dedicated to intercept and server responses:
 
 - `adaptResponse` change the server output
 - `receivedResponse` notify about the server final response (a valid output or error)
