@@ -20,10 +20,10 @@ class RequestTests: XCTestCase {
     }
     
     func test_toURLRequest_encodeBody() throws {
-        let request = try Request<Void>.post(.test, body: Body())
+        let request = try Request<Void>.post(.test, body: BodyMock())
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
         
-        XCTAssertEqual(request.httpBody, try JSONEncoder().encode(Body()))
+        XCTAssertEqual(request.httpBody, try JSONEncoder().encode(BodyMock()))
     }
     
     func test_toURLRequest_setCachePolicy() throws {
@@ -43,7 +43,7 @@ class RequestTests: XCTestCase {
         let name = "swift"
         try multipart.add(url: url, name: name)
         
-        let request = try Request<Void>.post(.test, body: .multipart(multipart))
+        let request = try Request<Void>.post(.test, body: multipart)
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
         
         /// We can't use  `XCTAssertEqual(request.httpBody, try multipart.encode)`
@@ -62,7 +62,7 @@ class RequestTests: XCTestCase {
     }
     
     func test_toURLRequest_bodyIsEncodable_fillContentTypeHeader() throws {
-        let request = try Request<Void>.post(.test, body: Body())
+        let request = try Request<Void>.post(.test, body: BodyMock())
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
         
         XCTAssertEqual(request.allHTTPHeaderFields?["Content-Type"], "application/json")
@@ -75,7 +75,7 @@ class RequestTests: XCTestCase {
         let name = "swift"
         try multipart.add(url: url, name: name)
         
-        let request = try Request<Void>.post(.test, body: .multipart(multipart))
+        let request = try Request<Void>.post(.test, body: multipart)
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
         
         XCTAssertEqual(request.allHTTPHeaderFields?["Content-Type"], HTTPContentType.multipart(boundary: multipart.boundary).value)
@@ -83,6 +83,6 @@ class RequestTests: XCTestCase {
     
 }
 
-private struct Body: Encodable {
+private struct BodyMock: Encodable {
     
 }

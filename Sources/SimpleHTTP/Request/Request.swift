@@ -4,6 +4,7 @@ public enum Method: String {
     case get
     case post
     case put
+    case patch
     case delete
 }
 
@@ -29,46 +30,41 @@ public struct Request<Output> {
         self.init(endpoint: endpoint, method: .get, query: query, body: nil)
     }
     
-    /// Creates a request suitable for a HTTP POST with an optional `Body`
-    public static func post(_ endpoint: Endpoint, body: Body?, query: [String: QueryParam] = [:])
-    -> Self {
-        self.init(endpoint: endpoint, method: .post, query: query, body: body)
-    }
-    
     /// Creates a request suitable for a HTTP POST with a `Encodable` body
-    public static func post(_ endpoint: Endpoint, body: Encodable, query: [String: QueryParam] = [:])
+    public static func post(_ endpoint: Endpoint, body: Encodable?, query: [String: QueryParam] = [:])
     -> Self {
-        self.post(endpoint, body: .encodable(body), query: query)
+        self.init(endpoint: endpoint, method: .post, query: query, body: body.map(Body.encodable))
     }
     
     /// Creates a request suitable for a HTTP POST with a `MultipartFormData` body
-    public static func post(_ endpoint: Endpoint, body: MultipartFormData, query: [String: QueryParam] = [:])
+    @_disfavoredOverload
+    public static func post(_ endpoint: Endpoint, body: MultipartFormData?, query: [String: QueryParam] = [:])
     -> Self {
-        self.post(endpoint, body: .multipart(body), query: query)
-    }
-    
-    /// Creates a request suitable for a HTTP PUT with a `Body` body.
-    /// Default implementation does not allow for sending nil body. If you need such a case extend Request with your
-    /// own init method
-    public static func put(_ endpoint: Endpoint, body: Body, query: [String: QueryParam] = [:])
-    -> Self {
-        self.init(endpoint: endpoint, method: .put, query: query, body: body)
+        self.init(endpoint: endpoint, method: .post, query: query, body: body.map(Body.multipart))
     }
     
     /// Creates a request suitable for a HTTP PUT with a `Encodable` body
-    /// Default implementation does not allow for sending nil body. If you need such a case extend Request with your
-    /// own init method
     public static func put(_ endpoint: Endpoint, body: Encodable, query: [String: QueryParam] = [:])
     -> Self {
-        self.put(endpoint, body: .encodable(body), query: query)
+        self.init(endpoint: endpoint, method: .put, query: query, body: .encodable(body))
     }
     
     /// Creates a request suitable for a HTTP PUT with a `MultipartFormData` body
-    ///  Default implementation does not allow for sending nil body. If you need such a case extend Request with your
-    /// own init method
     public static func put(_ endpoint: Endpoint, body: MultipartFormData, query: [String: QueryParam] = [:])
     -> Self {
-        self.put(endpoint, body: .multipart(body), query: query)
+        self.init(endpoint: endpoint, method: .put, query: query, body: .multipart(body))
+    }
+    
+    /// Creates a request suitable for a HTTP PATCH with a `Encodable` body
+    public static func patch(_ endpoint: Endpoint, body: Encodable, query: [String: QueryParam] = [:])
+    -> Self {
+        self.init(endpoint: endpoint, method: .patch, query: query, body: .encodable(body))
+    }
+    
+    /// Creates a request suitable for a HTTP PATCH with a `MultipartFormData` body
+    public static func patch(_ endpoint: Endpoint, body: MultipartFormData, query: [String: QueryParam] = [:])
+    -> Self {
+        self.init(endpoint: endpoint, method: .patch, query: query, body: .multipart(body))
     }
     
     /// Creates a request suitable for a HTTP DELETE
@@ -80,7 +76,7 @@ public struct Request<Output> {
     
     /// Creates a Request.
     ///
-    /// Use this init only if default provided static initializers (`.get`, `.post`, `.put`, `.delete`) do not suit your needs.
+    /// Use this init only if default provided static initializers (`.get`, `.post`, `.put`, `patch`, `.delete`) do not suit your needs.
     public init(endpoint: Endpoint, method: Method, query: [String: QueryParam], body: Body?) {
         self.endpoint = endpoint
         self.method = method
