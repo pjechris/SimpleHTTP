@@ -21,9 +21,9 @@ import Foundation
 ///
 /// let user: Endpoint = .myEndpoints.user
 /// ```
-public struct Endpoint: Equatable, ExpressibleByStringLiteral {
+public struct Endpoint: Equatable, ExpressibleByStringLiteral, ExpressibleByStringInterpolation {
     /// relative path
-    let path: String
+    public let path: String
 
     init(path: String) {
         self.path = path
@@ -32,7 +32,11 @@ public struct Endpoint: Equatable, ExpressibleByStringLiteral {
     public init(stringLiteral value: StringLiteralType) {
         self.init(path: value)
     }
-
+    
+    public init(stringInterpolation: DefaultStringInterpolation) {
+        self.init(path: stringInterpolation.description)
+    }
+    
     public static func ==(lhs: Endpoint, rhs: String) -> Bool {
         lhs.path == rhs
     }

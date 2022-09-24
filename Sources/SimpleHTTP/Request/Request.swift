@@ -4,6 +4,7 @@ public enum Method: String {
     case get
     case post
     case put
+    case patch
     case delete
 }
 
@@ -12,48 +13,91 @@ public enum Body {
     case multipart(MultipartFormData)
 }
 
-/// A Http request expecting an `Output` response
+/// A HTTP request safely typed for an `Output` response
 ///
 /// Highly inspired by https://swiftwithmajid.com/2021/02/10/building-type-safe-networking-in-swift/
 public struct Request<Output> {
-    
     /// request relative endpoint
     public let endpoint: Endpoint
     public let method: Method
     public let body: Body?
     public let query: [String: QueryParam]
+    public private(set) var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
     public private(set) var headers: HTTPHeaderFields = [:]
     
+    /// Creates a request suitable for a HTTP GET
     public static func get(_ endpoint: Endpoint, query: [String: QueryParam] = [:]) -> Self {
         self.init(endpoint: endpoint, method: .get, query: query, body: nil)
     }
     
-    public static func post(_ endpoint: Endpoint, body: Body?, query: [String: QueryParam] = [:])
+    /// Creates a request suitable for a HTTP POST with a `Encodable` body
+    public static func post(_ endpoint: Endpoint, body: Encodable?, query: [String: QueryParam] = [:])
     -> Self {
-        self.init(endpoint: endpoint, method: .post, query: query, body: body)
+        self.init(endpoint: endpoint, method: .post, query: query, body: body.map(Body.encodable))
     }
     
-    public static func put(_ endpoint: Endpoint, body: Body, query: [String: QueryParam] = [:])
+    /// Creates a request suitable for a HTTP POST with a `MultipartFormData` body
+    @_disfavoredOverload
+    public static func post(_ endpoint: Endpoint, body: MultipartFormData?, query: [String: QueryParam] = [:])
     -> Self {
-        self.init(endpoint: endpoint, method: .put, query: query, body: body)
+        self.init(endpoint: endpoint, method: .post, query: query, body: body.map(Body.multipart))
     }
     
+    /// Creates a request suitable for a HTTP PUT with a `Encodable` body
+    public static func put(_ endpoint: Endpoint, body: Encodable, query: [String: QueryParam] = [:])
+    -> Self {
+        self.init(endpoint: endpoint, method: .put, query: query, body: .encodable(body))
+    }
+    
+    /// Creates a request suitable for a HTTP PUT with a `MultipartFormData` body
+    public static func put(_ endpoint: Endpoint, body: MultipartFormData, query: [String: QueryParam] = [:])
+    -> Self {
+        self.init(endpoint: endpoint, method: .put, query: query, body: .multipart(body))
+    }
+    
+    /// Creates a request suitable for a HTTP PATCH with a `Encodable` body
+    public static func patch(_ endpoint: Endpoint, body: Encodable, query: [String: QueryParam] = [:])
+    -> Self {
+        self.init(endpoint: endpoint, method: .patch, query: query, body: .encodable(body))
+    }
+    
+    /// Creates a request suitable for a HTTP PATCH with a `MultipartFormData` body
+    public static func patch(_ endpoint: Endpoint, body: MultipartFormData, query: [String: QueryParam] = [:])
+    -> Self {
+        self.init(endpoint: endpoint, method: .patch, query: query, body: .multipart(body))
+    }
+    
+    /// Creates a request suitable for a HTTP DELETE
+    /// Default implementation does not allow for sending a body. If you need such a case extend Request with your
+    /// own init method
     public static func delete(_ endpoint: Endpoint, query: [String: QueryParam] = [:]) -> Self {
         self.init(endpoint: endpoint, method: .delete, query: query, body: nil)
     }
     
-    private init(endpoint: Endpoint, method: Method, query: [String: QueryParam], body: Body?) {
+    /// Creates a Request.
+    ///
+    /// Use this init only if default provided static initializers (`.get`, `.post`, `.put`, `patch`, `.delete`) do not suit your needs.
+    public init(endpoint: Endpoint, method: Method, query: [String: QueryParam], body: Body?) {
         self.endpoint = endpoint
         self.method = method
         self.body = body
         self.query = query
     }
     
-    /// add headers to the request
+    /// Adds headers to the request
     public func headers(_ newHeaders: [HTTPHeader: String]) -> Self {
         var request = self
         
         request.headers.merge(newHeaders) { $1 }
+        
+        return request
+    }
+    
+    /// Configures request cache policy
+    public func cachePolicy(_ policy: URLRequest.CachePolicy) -> Self {
+        var request = self
+        
+        request.cachePolicy = policy
         
         return request
     }
