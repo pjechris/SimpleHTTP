@@ -47,30 +47,41 @@ public struct Request<Output> {
         self.post(endpoint, body: .multipart(body), query: query)
     }
     
-    /// Creates a request suitable for a HTTP PUT with a `Body` body
-    public static func put(_ endpoint: Endpoint, body: Body?, query: [String: QueryParam] = [:])
+    /// Creates a request suitable for a HTTP PUT with a `Body` body.
+    /// Default implementation does not allow for sending nil body. If you need such a case extend Request with your
+    /// own init method
+    public static func put(_ endpoint: Endpoint, body: Body, query: [String: QueryParam] = [:])
     -> Self {
         self.init(endpoint: endpoint, method: .put, query: query, body: body)
     }
     
     /// Creates a request suitable for a HTTP PUT with a `Encodable` body
+    /// Default implementation does not allow for sending nil body. If you need such a case extend Request with your
+    /// own init method
     public static func put(_ endpoint: Endpoint, body: Encodable, query: [String: QueryParam] = [:])
     -> Self {
         self.put(endpoint, body: .encodable(body), query: query)
     }
     
     /// Creates a request suitable for a HTTP PUT with a `MultipartFormData` body
+    ///  Default implementation does not allow for sending nil body. If you need such a case extend Request with your
+    /// own init method
     public static func put(_ endpoint: Endpoint, body: MultipartFormData, query: [String: QueryParam] = [:])
     -> Self {
         self.put(endpoint, body: .multipart(body), query: query)
     }
     
     /// Creates a request suitable for a HTTP DELETE
+    /// Default implementation does not allow for sending a body. If you need such a case extend Request with your
+    /// own init method
     public static func delete(_ endpoint: Endpoint, query: [String: QueryParam] = [:]) -> Self {
         self.init(endpoint: endpoint, method: .delete, query: query, body: nil)
     }
     
-    private init(endpoint: Endpoint, method: Method, query: [String: QueryParam], body: Body?) {
+    /// Creates a Request.
+    ///
+    /// Use this init only if default provided static initializers (`.get`, `.post`, `.put`, `.delete`) do not suit your needs.
+    public init(endpoint: Endpoint, method: Method, query: [String: QueryParam], body: Body?) {
         self.endpoint = endpoint
         self.method = method
         self.body = body
