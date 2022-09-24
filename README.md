@@ -3,52 +3,64 @@
 ![swift](https://img.shields.io/badge/Swift-5.5%2B-orange?logo=swift&logoColor=white)
 ![platforms](https://img.shields.io/badge/Platforms-iOS%20%7C%20macOS-lightgrey)
 ![tests](https://github.com/pjechris/SimpleHTTP/actions/workflows/test.yml/badge.svg)
-[![twitter](https://img.shields.io/badge/twitter-pjechris-1DA1F2?logo=twitter&logoColor=white)](https://twitter.com/pjechris)
 
-Simple declarative HTTP API framework
+[![twitter](https://img.shields.io/badge/twitter-pjechris-1DA1F2?logo=twitter&logoColor=white)](https://twitter.com/pjechris)
+[![doc](https://img.shields.io/badge/read%20the%20doc-8CA1AF?logo=readthedocs&logoColor=white)](https://pjechris.github.io/SimpleHTTP/)
+
+Make HTTP API calls easier. Built on top of URLSession.
+
+## Installation
+
+Use Swift Package Manager to install the library:
+
+```swift
+dependencies: [
+  .package(url: "https://github.com/pjechris/SimpleHTTP", from: "0.4.0"),
+]
+```
+
+The package come with 2 modules:
+
+- `SimpleHTTP` which bring the full framework API described in this README
+- `SimpleHTTPFoundation` which only bring a few addition to Foundation API. See this [article](https://swiftunwrap.com/article/designing-http-framework-foundation/) or [API doc](https://pjechris.github.io/SimpleHTTP/) to have a glimpse of what is provided.
 
 ## Basic Usage
 
 ### Building a request
-First step is to build a request. You make requests by providing extension on top of `Request` type:
+
+You make requests by creating `Request` objects. You can either create them manually or provide static definition by extending `Request`:
 
 ```swift
 extension Request {
-  static let func login(_ body: UserBody) -> Self where Output == UserResponse {
+  static let func login(_ body: UserBody) -> Request<UserResponse> {
     .post("login", body: body)
   }
 }
 ```
 
-And... voila! We defined a `login(_:)` request which will request login endpoint by sending a `UserBody` and waiting for a `UserResponse`. Now it's time to use it.
-
-You can declare constant endpoints if needed (refer to Endpoint documentation to see more):
-
-```swift
-extension Endpoint {
-  static let login: Endpoint = "login"
-}
-
-extension Request {
-  static let func login(_ body: UserBody) -> Self where Output == UserResponse {
-    .post(.login, body: body)
-  }
-}
-```
+This defines a `Request.login(_:)` method which create a request targeting "login" endpoint by sending a `UserBody` and expecting a `UserResponse` as response.
 
 ### Sending a request
 
-To send a request use a `Session` instance. `Session` is somewhat similar to `URLSession` but providing additional functionalities.
+You can use your request along `URLSession` by converting it into a `URLRequest` by calling `request.toURLRequest(encoder:relativeTo:accepting)`.
+
+You can also use a `Session` object. `Session` is somewhat similar to `URLSession` but providing additional functionalities:
+
+- encoder/decoder for all requests
+- error handling
+- ability to [intercept](#interceptor) requests
 
 ```swift
 
-let session = Session(baseURL: URL(string: "https://github.com")!, encoder: JSONEncoder(), decoder: JSONDecoder())
+let session = Session(
+  baseURL: URL(string: "https://github.com")!,
+  encoder: JSONEncoder(),
+  decoder: JSONDecoder()
+)
 
-session.publisher(for: .login(UserBody(username: "pjechris", password: "MyPassword")))
+try await session.response(for: .login(UserBody(username: "pjechris", password: "MyPassword")))
 
 ```
-
-You can now use the returned publisher however you want. Its result is similar to what you have received with `URLSession.shared.dataTaskPublisher(for: ...).decode(type: UserResponse.self, decoder: JSONDecoder())`.
 
 A few words about Session:
 
@@ -58,69 +70,99 @@ A few words about Session:
 
 ## Send a body
 
+Request support two body types:
+
+- [Encodable](#encodable)
+- [Multipart](#multipart)
+
 ### Encodable
 
-You will build your request by sending your `body`  to construct it:
+To send an Encodable object just set it as your Request body:
 
 ```swift
 struct UserBody: Encodable {}
 
 extension Request {
-  static func login(_ body: UserBody) -> Self where Output == LoginResponse {
+  static func login(_ body: UserBody) -> Request<LoginResponse> {
     .post("login", body: body)
   }
 }
 ```
 
-We defined a `login(_:)` request which will request login endpoint by sending a `UserBody` and waiting for a `LoginResponse`
-
 ### Multipart
 
-You we build 2 requests:
+You can create multipart content from two kind of content
 
-- send `URL`
-- send a `Data`
+- From a disk file (using a `URL`)
+- From raw content (using `Data`)
+
+First example show how to create a request sending an audio file as request body:
 
 ```swift
 extension Request {
-  static func send(audio: URL) throws -> Self where Output == SendAudioResponse {
+  static func send(audioFile: URL) throws -> Request<SendAudioResponse> {
     var multipart = MultipartFormData()
-    try multipart.add(url: audio, name: "define_your_name")
-    return .post("sendAudio", body: multipart)
-  }
 
-  static func send(audio: Data) throws -> Self where Output == SendAudioResponse {
-    var multipart = MultipartFormData()
-    try multipart.add(data: data, name: "your_name", fileName: "your_fileName", mimeType: "right_mimeType")
-    return .post("sendAudio", body: multipart)
+    try multipart.add(url: audioFile, name: "define_your_name")
+
+    return .post("v1/sendAudio", body: multipart)
   }
 }
 ```
 
-We defined the 2  `send(audio:)` requests which will request `sendAudio` endpoint by sending an `URL` or a `Data` and waiting for a `SendAudioResponse`
+Second example show same request but this time audio file is just some raw unknown data:
 
-We can add multiple `Data`/`URL` to the multipart
+```swift
+  static func send(audioFile: Data) throws -> Request<SendAudioResponse> {
+    var multipart = MultipartFormData()
+
+    try multipart.add(data: audioFile, name: "your_name", mimeType: "audioFile_mimeType")
+
+    return .post("v1/sendAudio", body: multipart)
+  }
+}
+```
+
+Note you can add multiple contents inside a `MultipartFormData`. For instance here we send both a audio file and an image:
 
 ```swift
 extension Request {
-  static func send(audio: URL, image: Data) throws -> Self where Output == SendAudioImageResponse {
+  static func send(audio: URL, image: Data) throws -> Request<SendAudioImageResponse> {
     var multipart = MultipartFormData()
+
     try multipart.add(url: audio, name: "define_your_name")
-    try multipart.add(data: image, name: "your_name", fileName: "your_fileName", mimeType: "right_mimeType")
-    return .post("sendAudioImage", body: multipart)
+    try multipart.add(data: image, name: "your_name", mimeType: "image_mimeType")
+
+    return .post("v1/send", body: multipart)
+  }
+}
+```
+
+## Constant endpoints
+
+You can declare constant endpoints if needed (refer to Endpoint documentation to see more):
+
+```swift
+extension Endpoint {
+  static let login: Endpoint = "login"
+}
+
+extension Request {
+  static let func login(_ body: UserBody) -> Request<UserResponse> {
+    .post(.login, body: body)
   }
 }
 ```
 
 ## Interceptor
 
-Protocol `Interceptor` enable powerful request interceptions. This include authentication, logging, request retrying, etc...
+When using Session you can add automatic behavior to your requests/responses using `Interceptor` like authentication, logging, request retrying, etc...
 
 ### `RequestInterceptor`
 
-`RequestInterceptor` allow to adapt a or retry a request whenever it failed:
+`RequestInterceptor` allows to adapt and/or retry a request:
 
-- `adaptRequest` method is called before making a request and allow you to transform it adding headers, changing path, ...
+- `adaptRequest` method is called before making a request allowing you to transform it adding headers, changing path, ...
 - `rescueRequestError` is called whenever the request fail. You'll have a chance to retry the request. This can be used to re-authenticate the user for instance
 
 ### `ResponseInterceptor`
