@@ -22,8 +22,8 @@ public struct Request<Output> {
     public let method: Method
     public let body: Body?
     public let query: [String: QueryParam]
-    public private(set) var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
-    public private(set) var headers: HTTPHeaderFields = [:]
+    public var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
+    public var headers: HTTPHeaderFields = [:]
     
     /// Creates a request suitable for a HTTP GET
     public static func get(_ path: Path, query: [String: QueryParam] = [:]) -> Self {
@@ -54,6 +54,11 @@ public struct Request<Output> {
     -> Self {
         self.init(path: path, method: .put, query: query, body: .multipart(body))
     }
+
+    /// Create a HTTP PUT request with no body
+    public static func put(_ path: Path, query: [String: QueryParam] = [:]) -> Self {
+        self.init(path: path, method: .put, query: query, body: nil)
+    }
     
     /// Creates a request suitable for a HTTP PATCH with a `Encodable` body
     public static func patch(_ path: Path, body: Encodable, query: [String: QueryParam] = [:])
@@ -68,9 +73,12 @@ public struct Request<Output> {
     }
     
     /// Creates a request suitable for a HTTP DELETE
-    /// Default implementation does not allow for sending a body. If you need such a case extend Request with your
-    /// own init method
     public static func delete(_ path: Path, query: [String: QueryParam] = [:]) -> Self {
+        self.init(path: path, method: .delete, query: query, body: nil)
+    }
+
+    /// Creates a DELETE request with a Encodable body
+    public static func delete(_ path: Path, body: Encodable, query: [String: QueryParam] = [:]) -> Self {
         self.init(path: path, method: .delete, query: query, body: nil)
     }
     
