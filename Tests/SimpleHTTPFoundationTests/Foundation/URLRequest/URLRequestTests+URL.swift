@@ -1,6 +1,6 @@
 import Foundation
 import XCTest
-@testable import SimpleHTTP
+@testable import SimpleHTTPFoundation
 
 class URLRequestURLTests: XCTestCase {
     func test_relativeTo_requestURLHasBaseURL() {
