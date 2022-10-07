@@ -1,15 +1,15 @@
 import XCTest
 @testable import SimpleHTTP
 
-extension Endpoint {
-    fileprivate static let test: Endpoint = "test"
+extension Path {
+    fileprivate static let test: Path = "test"
 }
 
 class RequestTests: XCTestCase {
     let baseURL = URL(string: "https://google.fr")!
     
     func test_init_withPathAsString() {
-        XCTAssertEqual(Request<Void>.get("hello_world").endpoint, "hello_world")
+        XCTAssertEqual(Request<Void>.get("hello_world").path, "hello_world")
     }
     
     func test_toURLRequest_setHttpMethod() throws {

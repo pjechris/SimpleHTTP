@@ -17,8 +17,8 @@ public enum Body {
 ///
 /// Highly inspired by https://swiftwithmajid.com/2021/02/10/building-type-safe-networking-in-swift/
 public struct Request<Output> {
-    /// request relative endpoint
-    public let endpoint: Endpoint
+    /// request relative path
+    public let path: Path
     public let method: Method
     public let body: Body?
     public let query: [String: QueryParam]
@@ -26,59 +26,59 @@ public struct Request<Output> {
     public private(set) var headers: HTTPHeaderFields = [:]
     
     /// Creates a request suitable for a HTTP GET
-    public static func get(_ endpoint: Endpoint, query: [String: QueryParam] = [:]) -> Self {
-        self.init(endpoint: endpoint, method: .get, query: query, body: nil)
+    public static func get(_ path: Path, query: [String: QueryParam] = [:]) -> Self {
+        self.init(path: path, method: .get, query: query, body: nil)
     }
     
     /// Creates a request suitable for a HTTP POST with a `Encodable` body
-    public static func post(_ endpoint: Endpoint, body: Encodable?, query: [String: QueryParam] = [:])
+    public static func post(_ path: Path, body: Encodable?, query: [String: QueryParam] = [:])
     -> Self {
-        self.init(endpoint: endpoint, method: .post, query: query, body: body.map(Body.encodable))
+        self.init(path: path, method: .post, query: query, body: body.map(Body.encodable))
     }
     
     /// Creates a request suitable for a HTTP POST with a `MultipartFormData` body
     @_disfavoredOverload
-    public static func post(_ endpoint: Endpoint, body: MultipartFormData?, query: [String: QueryParam] = [:])
+    public static func post(_ path: Path, body: MultipartFormData?, query: [String: QueryParam] = [:])
     -> Self {
-        self.init(endpoint: endpoint, method: .post, query: query, body: body.map(Body.multipart))
+        self.init(path: path, method: .post, query: query, body: body.map(Body.multipart))
     }
     
     /// Creates a request suitable for a HTTP PUT with a `Encodable` body
-    public static func put(_ endpoint: Endpoint, body: Encodable, query: [String: QueryParam] = [:])
+    public static func put(_ path: Path, body: Encodable, query: [String: QueryParam] = [:])
     -> Self {
-        self.init(endpoint: endpoint, method: .put, query: query, body: .encodable(body))
+        self.init(path: path, method: .put, query: query, body: .encodable(body))
     }
     
     /// Creates a request suitable for a HTTP PUT with a `MultipartFormData` body
-    public static func put(_ endpoint: Endpoint, body: MultipartFormData, query: [String: QueryParam] = [:])
+    public static func put(_ path: Path, body: MultipartFormData, query: [String: QueryParam] = [:])
     -> Self {
-        self.init(endpoint: endpoint, method: .put, query: query, body: .multipart(body))
+        self.init(path: path, method: .put, query: query, body: .multipart(body))
     }
     
     /// Creates a request suitable for a HTTP PATCH with a `Encodable` body
-    public static func patch(_ endpoint: Endpoint, body: Encodable, query: [String: QueryParam] = [:])
+    public static func patch(_ path: Path, body: Encodable, query: [String: QueryParam] = [:])
     -> Self {
-        self.init(endpoint: endpoint, method: .patch, query: query, body: .encodable(body))
+        self.init(path: path, method: .patch, query: query, body: .encodable(body))
     }
     
     /// Creates a request suitable for a HTTP PATCH with a `MultipartFormData` body
-    public static func patch(_ endpoint: Endpoint, body: MultipartFormData, query: [String: QueryParam] = [:])
+    public static func patch(_ path: Path, body: MultipartFormData, query: [String: QueryParam] = [:])
     -> Self {
-        self.init(endpoint: endpoint, method: .patch, query: query, body: .multipart(body))
+        self.init(path: path, method: .patch, query: query, body: .multipart(body))
     }
     
     /// Creates a request suitable for a HTTP DELETE
     /// Default implementation does not allow for sending a body. If you need such a case extend Request with your
     /// own init method
-    public static func delete(_ endpoint: Endpoint, query: [String: QueryParam] = [:]) -> Self {
-        self.init(endpoint: endpoint, method: .delete, query: query, body: nil)
+    public static func delete(_ path: Path, query: [String: QueryParam] = [:]) -> Self {
+        self.init(path: path, method: .delete, query: query, body: nil)
     }
     
     /// Creates a Request.
     ///
     /// Use this init only if default provided static initializers (`.get`, `.post`, `.put`, `patch`, `.delete`) do not suit your needs.
-    public init(endpoint: Endpoint, method: Method, query: [String: QueryParam], body: Body?) {
-        self.endpoint = endpoint
+    public init(path: Path, method: Method, query: [String: QueryParam], body: Body?) {
+        self.path = path
         self.method = method
         self.body = body
         self.query = query

@@ -38,7 +38,7 @@ extension Request {
 }
 ```
 
-This defines a `Request.login(_:)` method which create a request targeting "login" endpoint by sending a `UserBody` and expecting a `UserResponse` as response.
+This defines a `Request.login(_:)` method which create a request targeting "login" path by sending a `UserBody` and expecting a `UserResponse` as response.
 
 ### Sending a request
 
@@ -64,7 +64,7 @@ try await session.response(for: .login(UserBody(username: "pjechris", password: 
 
 A few words about Session:
 
-- `baseURL` will be prepended to all call endpoints
+- `baseURL` will be prepended to all call paths
 - You can skip encoder and decoder if you use JSON
 - You can provide a custom `URLSession` instance if ever needed
 
@@ -138,13 +138,13 @@ extension Request {
 }
 ```
 
-## Constant endpoints
+## Constant paths
 
-You can declare constant endpoints if needed (refer to Endpoint documentation to see more):
+You can declare constant paths if needed (refer to Path documentation to see more):
 
 ```swift
-extension Endpoint {
-  static let login: Endpoint = "login"
+extension Path {
+  static let login: Path = "login"
 }
 
 extension Request {

@@ -6,8 +6,8 @@ import FoundationNetworking
 
 extension URL {
     init<Output>(from request: Request<Output>) throws {
-        guard var components = URLComponents(string: request.endpoint.path) else {
-            throw URLComponents.Error.invalid(endpoint: request.endpoint)
+        guard var components = URLComponents(string: request.path.value) else {
+            throw URLComponents.Error.invalid(path: request.path)
         }
         
         let queryItems = (components.queryItems ?? []) + request.query.queryItems
@@ -24,7 +24,7 @@ extension URL {
 
 extension URLComponents {
     public enum Error: Swift.Error {
-        case invalid(endpoint: Endpoint)
+        case invalid(path: Path)
         case cannotGenerateURL(components: URLComponents)
     }
 }

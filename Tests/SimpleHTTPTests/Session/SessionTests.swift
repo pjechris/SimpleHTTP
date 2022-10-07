@@ -97,8 +97,8 @@ class SessionAsyncTests: XCTestCase {
     }
 }
 
-private extension Endpoint {
-    static let test: Endpoint = "test"
+private extension Path {
+    static let test: Path = "test"
 }
 
 private struct Content: Codable, Equatable {
