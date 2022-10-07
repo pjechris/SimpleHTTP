@@ -1,5 +1,5 @@
 import XCTest
-import SimpleHTTP
+import SimpleHTTPFoundation
 
 #if canImport(FoundationNetworking)
 import FoundationNetworking

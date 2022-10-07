@@ -1,7 +1,7 @@
 import Foundation
 
 extension URLRequest {
-    /// Return a new URLRequest whose endpoint is relative to `baseURL`
+    /// Return a new URLRequest whose path is relative to `baseURL`
     public func relativeTo(_ baseURL: URL) -> URLRequest {
         var urlRequest = self
         var components = URLComponents(string: baseURL.appendingPathComponent(url?.path ?? "").absoluteString)
