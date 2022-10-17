@@ -6,7 +6,7 @@ extension URLSession {
         try await withCheckedThrowingContinuation { promise in
             self.dataTask(with: urlRequest) { data, response, error in
                 if let error = error {
-                    promise.resume(throwing: error)
+                    return promise.resume(throwing: error)
                 }
                 
                 guard let data = data, let response = response else {
