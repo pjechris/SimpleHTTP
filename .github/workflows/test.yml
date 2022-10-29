@@ -10,11 +10,14 @@ on:
 
 jobs:
   test:
-    runs-on: macos-11
+    runs-on: macos-12
 
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2
 
+    - name: Lint code
+      run: swift run swift-format --recursive Sources
+
     - name: Run tests
-      run: swift test --enable-test-discovery
+      run: swift test
