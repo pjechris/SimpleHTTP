@@ -16,5 +16,8 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v2
 
+    - name: Lint code
+      uses: swiftlint lint
+
     - name: Run tests
       run: swift test --enable-test-discovery

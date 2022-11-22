@@ -1,0 +1,20 @@
+included:
+  - Sources
+  - Tests
+
+excluded:
+  - build
+  - .build
+
+disabled_rules:
+  - statement_position
+  - type_name
+
+opt_in_rules:
+  - closure_end_indentation
+  - conditional_returns_on_newline
+  - empty_count
+  - indentation_width
+
+line_length: 120
+warning_threshold: 0
