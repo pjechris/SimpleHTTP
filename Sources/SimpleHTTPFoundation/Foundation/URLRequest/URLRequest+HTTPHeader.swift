@@ -11,7 +11,7 @@ extension URLRequest {
             setValue(value, forHTTPHeaderField: header.key)
         }
     }
-    
+
     /// Return a new `URLRequest`` with added `headers``
     public func settingHeaders(_ headers: HTTPHeaderFields) -> Self {
         var urlRequest = self

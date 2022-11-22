@@ -24,31 +24,31 @@ public struct Request<Output> {
     public let query: [String: QueryParam]
     public var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
     public var headers: HTTPHeaderFields = [:]
-    
+
     /// Creates a request suitable for a HTTP GET
     public static func get(_ path: Path, query: [String: QueryParam] = [:]) -> Self {
         self.init(path: path, method: .get, query: query, body: nil)
     }
-    
+
     /// Creates a request suitable for a HTTP POST with a `Encodable` body
     public static func post(_ path: Path, body: Encodable?, query: [String: QueryParam] = [:])
     -> Self {
         self.init(path: path, method: .post, query: query, body: body.map(Body.encodable))
     }
-    
+
     /// Creates a request suitable for a HTTP POST with a `MultipartFormData` body
     @_disfavoredOverload
     public static func post(_ path: Path, body: MultipartFormData?, query: [String: QueryParam] = [:])
     -> Self {
         self.init(path: path, method: .post, query: query, body: body.map(Body.multipart))
     }
-    
+
     /// Creates a request suitable for a HTTP PUT with a `Encodable` body
     public static func put(_ path: Path, body: Encodable, query: [String: QueryParam] = [:])
     -> Self {
         self.init(path: path, method: .put, query: query, body: .encodable(body))
     }
-    
+
     /// Creates a request suitable for a HTTP PUT with a `MultipartFormData` body
     public static func put(_ path: Path, body: MultipartFormData, query: [String: QueryParam] = [:])
     -> Self {
@@ -59,19 +59,19 @@ public struct Request<Output> {
     public static func put(_ path: Path, query: [String: QueryParam] = [:]) -> Self {
         self.init(path: path, method: .put, query: query, body: nil)
     }
-    
+
     /// Creates a request suitable for a HTTP PATCH with a `Encodable` body
     public static func patch(_ path: Path, body: Encodable, query: [String: QueryParam] = [:])
     -> Self {
         self.init(path: path, method: .patch, query: query, body: .encodable(body))
     }
-    
+
     /// Creates a request suitable for a HTTP PATCH with a `MultipartFormData` body
     public static func patch(_ path: Path, body: MultipartFormData, query: [String: QueryParam] = [:])
     -> Self {
         self.init(path: path, method: .patch, query: query, body: .multipart(body))
     }
-    
+
     /// Creates a request suitable for a HTTP DELETE
     public static func delete(_ path: Path, query: [String: QueryParam] = [:]) -> Self {
         self.init(path: path, method: .delete, query: query, body: nil)
@@ -81,7 +81,7 @@ public struct Request<Output> {
     public static func delete(_ path: Path, body: Encodable, query: [String: QueryParam] = [:]) -> Self {
         self.init(path: path, method: .delete, query: query, body: nil)
     }
-    
+
     /// Creates a Request.
     ///
     /// Use this init only if default provided static initializers (`.get`, `.post`, `.put`, `patch`, `.delete`) do not suit your needs.
@@ -91,22 +91,22 @@ public struct Request<Output> {
         self.body = body
         self.query = query
     }
-    
+
     /// Adds headers to the request
     public func headers(_ newHeaders: [HTTPHeader: String]) -> Self {
         var request = self
-        
+
         request.headers.merge(newHeaders) { $1 }
-        
+
         return request
     }
-    
+
     /// Configures request cache policy
     public func cachePolicy(_ policy: URLRequest.CachePolicy) -> Self {
         var request = self
-        
+
         request.cachePolicy = policy
-        
+
         return request
     }
 }

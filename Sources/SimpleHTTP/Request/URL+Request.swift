@@ -9,15 +9,15 @@ extension URL {
         guard var components = URLComponents(string: request.path.value) else {
             throw URLComponents.Error.invalid(path: request.path)
         }
-        
+
         let queryItems = (components.queryItems ?? []) + request.query.queryItems
-        
+
         components.queryItems = queryItems.isEmpty ? nil : queryItems
-        
+
         guard let url = components.url else {
             throw URLComponents.Error.cannotGenerateURL(components: components)
         }
-        
+
         self = url
     }
 }
@@ -30,7 +30,7 @@ extension URLComponents {
 }
 
 extension Dictionary where Key == String, Value == String {
-    fileprivate var queryItems: [URLQueryItem]  {
+    fileprivate var queryItems: [URLQueryItem] {
         map { URLQueryItem(name: $0.key, value: $0.value) }
     }
 }

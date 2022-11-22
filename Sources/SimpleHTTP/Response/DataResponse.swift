@@ -14,7 +14,7 @@ extension URLDataResponse {
             guard let decoder = errorDecoder, !data.isEmpty else {
                 throw error
             }
-            
+
             throw try decoder(data)
         }
     }

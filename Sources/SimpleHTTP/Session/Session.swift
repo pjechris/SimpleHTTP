@@ -72,7 +72,7 @@ extension Session {
 
         do {
             let result = try await dataTask(urlRequest)
-            
+
             try result.validate(errorDecoder: config.errorConverter)
 
             return Response(data: result.data, request: modifiedRequest)

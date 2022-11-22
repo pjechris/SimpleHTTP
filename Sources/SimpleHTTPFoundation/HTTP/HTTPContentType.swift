@@ -3,11 +3,11 @@ import Foundation
 /// A struct representing a http header content type value
 public struct HTTPContentType: Hashable, ExpressibleByStringLiteral {
     public let value: String
-    
+
     public init(value: String) {
         self.value = value
     }
-    
+
     public init(stringLiteral value: StringLiteralType) {
         self.value = value
     }

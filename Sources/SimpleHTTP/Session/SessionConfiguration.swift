@@ -13,7 +13,7 @@ public struct SessionConfiguration {
     let interceptor: Interceptor
     /// a function decoding data (using `decoder`) as a custom error
     private(set) var errorConverter: DataErrorDecoder?
-    
+
     /// - Parameter encoder to use for request bodies
     /// - Parameter decoder used to decode http responses
     /// - Parameter decodeQueue: queue on which to decode data
@@ -28,7 +28,7 @@ public struct SessionConfiguration {
             self.decodingQueue = decodingQueue
             self.interceptor = interceptors
         }
-    
+
     /// - Parameter dataError: Error type to use when having error with data
     public init<DataError: Error & Decodable>(
         encoder: ContentDataEncoder = JSONEncoder(),

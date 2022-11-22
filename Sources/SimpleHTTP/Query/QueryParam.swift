@@ -50,7 +50,7 @@ extension Array: QueryParam where Element: QueryParam {
                     return values
                 }
             }
-        
+
         return .collection(values)
     }
 }

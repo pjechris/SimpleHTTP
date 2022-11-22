@@ -7,34 +7,34 @@ extension Path {
 
 class RequestTests: XCTestCase {
     let baseURL = URL(string: "https://google.fr")!
-    
+
     func test_init_withPathAsString() {
         XCTAssertEqual(Request<Void>.get("hello_world").path, "hello_world")
     }
-    
+
     func test_toURLRequest_setHttpMethod() throws {
         let request = try Request<Void>.post(.test, body: nil)
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
-        
+
         XCTAssertEqual(request.httpMethod, "POST")
     }
-    
+
     func test_toURLRequest_encodeBody() throws {
         let request = try Request<Void>.post(.test, body: BodyMock())
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
-        
+
         XCTAssertEqual(request.httpBody, try JSONEncoder().encode(BodyMock()))
     }
-    
+
     func test_toURLRequest_setCachePolicy() throws {
         let request = try Request<Void>
             .get(.test)
             .cachePolicy(.returnCacheDataDontLoad)
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
-        
+
         XCTAssertEqual(request.cachePolicy, .returnCacheDataDontLoad)
     }
-    
+
     func test_toURLRequest_encodeMultipartBody() throws {
         let crlf = EncodingCharacters.crlf
         let boundary = "boundary"
@@ -42,10 +42,10 @@ class RequestTests: XCTestCase {
         let url = try url(forResource: "swift", withExtension: "png")
         let name = "swift"
         try multipart.add(url: url, name: name)
-        
+
         let request = try Request<Void>.post(.test, body: multipart)
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
-        
+
         /// We can't use  `XCTAssertEqual(request.httpBody, try multipart.encode)`
         /// The `encode` method is executed to fast and rase and error
         var body = Data()
@@ -60,29 +60,29 @@ class RequestTests: XCTestCase {
         body.append(Boundary.data(for: .final, boundary: boundary))
         XCTAssertEqual(request.httpBody, body)
     }
-    
+
     func test_toURLRequest_bodyIsEncodable_fillContentTypeHeader() throws {
         let request = try Request<Void>.post(.test, body: BodyMock())
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
-        
+
         XCTAssertEqual(request.allHTTPHeaderFields?["Content-Type"], "application/json")
     }
-    
+
     func test_toURLRequest_bodyIsMultipart_fillContentTypeHeader() throws {
         let boundary = "boundary"
         var multipart = MultipartFormData(boundary: boundary)
         let url = try url(forResource: "swift", withExtension: "png")
         let name = "swift"
         try multipart.add(url: url, name: name)
-        
+
         let request = try Request<Void>.post(.test, body: multipart)
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
-        
+
         XCTAssertEqual(request.allHTTPHeaderFields?["Content-Type"], HTTPContentType.multipart(boundary: multipart.boundary).value)
     }
-    
+
 }
 
 private struct BodyMock: Encodable {
-    
+
 }
