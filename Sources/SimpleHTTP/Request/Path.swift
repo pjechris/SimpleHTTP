@@ -37,7 +37,7 @@ public struct Path: Equatable, ExpressibleByStringLiteral, ExpressibleByStringIn
         self.init(value: stringInterpolation.description)
     }
 
-    public static func ==(lhs: Path, rhs: String) -> Bool {
+    public static func == (lhs: Path, rhs: String) -> Bool {
         lhs.value == rhs
     }
 }

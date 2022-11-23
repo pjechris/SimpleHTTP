@@ -19,4 +19,4 @@ opt_in_rules:
 line_length:
   warning: 120
   ignores_comments: true
-warning_threshold: 0
+warning_threshold: 1

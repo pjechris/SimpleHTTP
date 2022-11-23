@@ -6,10 +6,10 @@ import FoundationNetworking
 
 extension URLRequest {
     public mutating func multipartBody(_ body: MultipartFormData) throws {
-      var multipartEncode = MultipartFormDataEncoder(body: body)
+        var multipartEncode = MultipartFormDataEncoder(body: body)
 
-      httpBody = try multipartEncode.encode()
+        httpBody = try multipartEncode.encode()
 
-      setHeaders([.contentType: HTTPContentType.multipart(boundary: body.boundary).value])
+        setHeaders([.contentType: HTTPContentType.multipart(boundary: body.boundary).value])
     }
 }
