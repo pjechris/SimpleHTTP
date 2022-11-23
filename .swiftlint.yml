@@ -16,5 +16,7 @@ opt_in_rules:
   - empty_count
   - indentation_width
 
-line_length: 120
+line_length:
+  warning: 120
+  ignores_comments: true
 warning_threshold: 0
