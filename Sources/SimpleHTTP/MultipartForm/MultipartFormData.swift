@@ -152,7 +152,7 @@ public struct MultipartFormData {
         let headers = defineBodyPartHeader(name: name, fileName: fileName, mimeType: mimeType)
         let stream = InputStream(data: data)
         let length = data.count
-        
+
         bodyParts.append(BodyPart(headers: headers, stream: stream, length: length))
     }
 

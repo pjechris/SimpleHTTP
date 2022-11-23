@@ -16,17 +16,17 @@ extension Request {
         if let decoder = accepting {
             return request.settingHeaders([.accept: type(of: decoder).contentType.value])
         }
-        
+
         return request
     }
 
     private func toURLRequest(encoder: ContentDataEncoder) throws -> URLRequest {
         var urlRequest = try URLRequest(url: URL(from: self))
-        
+
         urlRequest.httpMethod = method.rawValue.uppercased()
         urlRequest.cachePolicy = cachePolicy
         urlRequest.setHeaders(headers)
-        
+
         if let body = body {
             switch body {
             case .encodable(let body):
@@ -35,10 +35,8 @@ extension Request {
                 try urlRequest.multipartBody(multipart)
             }
         }
-        
+
         return urlRequest
     }
 
-    
 }
-

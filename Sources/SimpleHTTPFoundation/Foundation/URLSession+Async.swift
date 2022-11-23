@@ -8,11 +8,11 @@ extension URLSession {
                 if let error = error {
                     return promise.resume(throwing: error)
                 }
-                
+
                 guard let data = data, let response = response else {
                     return promise.resume(throwing: URLError(.badServerResponse))
                 }
-                
+
                 promise.resume(returning: (data, response))
             }
             .resume()

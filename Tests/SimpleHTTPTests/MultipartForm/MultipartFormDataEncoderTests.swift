@@ -30,7 +30,6 @@ class MultipartFormDataEncoderTests: XCTestCase {
         XCTAssertEqual(encodedData, expectedData)
     }
 
-
     func test_encode_data_multipleBodyPart() throws {
         let boundary = "boundary"
         var multipart = MultipartFormData(boundary: boundary)
@@ -158,6 +157,5 @@ class MultipartFormDataEncoderTests: XCTestCase {
 
         XCTAssertEqual(encodedData, expectedData)
     }
-
 
 }

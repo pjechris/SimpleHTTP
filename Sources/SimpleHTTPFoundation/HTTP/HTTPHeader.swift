@@ -6,7 +6,7 @@ public typealias HTTPHeaderFields = [HTTPHeader: String]
 /// A struct representing a http request header key
 public struct HTTPHeader: Hashable, ExpressibleByStringLiteral {
     public let key: String
-    
+
     public init(stringLiteral value: StringLiteralType) {
         self.key = value
     }

@@ -10,7 +10,7 @@ extension Session {
     /// - Returns: a Publisher emitting Output on success, an error otherwise
     public func publisher<Output: Decodable>(for request: Request<Output>) -> AnyPublisher<Output, Error> {
         let subject = PassthroughSubject<Output, Error>()
-        
+
         Task {
             do {
                 subject.send(try await response(for: request))
@@ -20,13 +20,13 @@ extension Session {
                 subject.send(completion: .failure(error))
             }
         }
-        
+
         return subject.eraseToAnyPublisher()
     }
-    
+
     public func publisher(for request: Request<Void>) -> AnyPublisher<Void, Error> {
         let subject = PassthroughSubject<Void, Error>()
-        
+
         Task {
             do {
                 subject.send(try await response(for: request))
@@ -36,7 +36,7 @@ extension Session {
                 subject.send(completion: .failure(error))
             }
         }
-        
+
         return subject.eraseToAnyPublisher()
     }
 }

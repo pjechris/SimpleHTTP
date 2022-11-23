@@ -32,13 +32,12 @@ public struct Path: Equatable, ExpressibleByStringLiteral, ExpressibleByStringIn
     public init(stringLiteral value: StringLiteralType) {
         self.init(value: value)
     }
-    
+
     public init(stringInterpolation: DefaultStringInterpolation) {
         self.init(value: stringInterpolation.description)
     }
-    
+
     public static func ==(lhs: Path, rhs: String) -> Bool {
         lhs.value == rhs
     }
 }
-
