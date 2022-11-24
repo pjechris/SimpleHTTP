@@ -9,7 +9,11 @@ extension Request {
     /// - Parameter encoder: the encoder to use to encode the body is present
     /// - Parameter relativeTo: the base URL to append to the request path
     /// - Parameter accepting: if not nil will be used to set "Accept" header value
-    public func toURLRequest(encoder: ContentDataEncoder, relativeTo baseURL: URL, accepting: ContentDataDecoder? = nil) throws -> URLRequest {
+    public func toURLRequest(
+        encoder: ContentDataEncoder,
+        relativeTo baseURL: URL,
+        accepting: ContentDataDecoder? = nil
+    ) throws -> URLRequest {
         let request = try toURLRequest(encoder: encoder)
             .relativeTo(baseURL)
 

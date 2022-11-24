@@ -20,17 +20,17 @@ struct MultipartFormDataEncoder {
         var encoded = Data()
 
         if var first = bodyParts.first {
-          first.hasInitialBoundary = true
-          bodyParts[0] = first
+            first.hasInitialBoundary = true
+            bodyParts[0] = first
         }
 
         if var last = bodyParts.last {
-          last.hasFinalBoundary = true
-          bodyParts[bodyParts.count - 1] = last
+            last.hasFinalBoundary = true
+            bodyParts[bodyParts.count - 1] = last
         }
 
         for bodyPart in bodyParts {
-          encoded.append(try encodeBodyPart(bodyPart))
+            encoded.append(try encodeBodyPart(bodyPart))
         }
 
         return encoded

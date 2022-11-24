@@ -176,16 +176,25 @@ public struct MultipartFormData {
     private func mimeType(from url: URL) -> String {
         if #available(iOS 14.0, *), #available(macOS 11.0, *) {
             guard let type = UTType(filenameExtension: url.pathExtension), let mime = type.preferredMIMEType else {
-              return HTTPContentType.octetStream.value
+                return HTTPContentType.octetStream.value
             }
+
             return mime
-        } else {
-            if let id = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, url.pathExtension as CFString, nil)?.takeRetainedValue(),
-               let contentType = UTTypeCopyPreferredTagWithClass(id, kUTTagClassMIMEType)?.takeRetainedValue() {
-                return contentType as String
-            }
-            return HTTPContentType.octetStream.value
         }
+
+        let contentType = UTTypeCreatePreferredIdentifierForTag(
+            kUTTagClassFilenameExtension,
+            url.pathExtension as CFString,
+            nil
+        )
+            .flatMap { UTTypeCopyPreferredTagWithClass($0.takeRetainedValue(), kUTTagClassMIMEType) }
+            .map { $0.takeRetainedValue() }
+
+        if let contentType = contentType {
+            return contentType as String
+        }
+
+        return HTTPContentType.octetStream.value
     }
 
 }

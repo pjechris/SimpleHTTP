@@ -20,7 +20,9 @@ extension HTTPHeader {
     public static var contentDisposition: Self = "Content-Disposition"
 }
 
+// swiftlint:disable line_length
 @available(*, unavailable, message: "This is a reserved header. See https://developer.apple.com/documentation/foundation/nsurlrequest#1776617")
+// swiftlint:enable line_length
 extension HTTPHeader {
     public static let connection: Self = "Connection"
     public static let contentLength: Self = "Content-Length"

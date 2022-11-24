@@ -37,7 +37,7 @@ public struct SessionConfiguration {
         interceptors: CompositeInterceptor = [],
         dataError: DataError.Type
     ) {
-        self.init(encoder: encoder, decoder: decoder,  decodingQueue: decodingQueue, interceptors: interceptors)
+        self.init(encoder: encoder, decoder: decoder, decodingQueue: decodingQueue, interceptors: interceptors)
         self.errorConverter = {
             try decoder.decode(dataError, from: $0)
         }

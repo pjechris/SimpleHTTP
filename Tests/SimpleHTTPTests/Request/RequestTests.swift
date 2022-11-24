@@ -78,7 +78,10 @@ class RequestTests: XCTestCase {
         let request = try Request<Void>.post(.test, body: multipart)
             .toURLRequest(encoder: JSONEncoder(), relativeTo: baseURL)
 
-        XCTAssertEqual(request.allHTTPHeaderFields?["Content-Type"], HTTPContentType.multipart(boundary: multipart.boundary).value)
+        XCTAssertEqual(
+            request.allHTTPHeaderFields?["Content-Type"],
+            HTTPContentType.multipart(boundary: multipart.boundary).value
+        )
     }
 
 }

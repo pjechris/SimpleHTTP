@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  test:
+  doc:
     runs-on: macos-latest
 
     steps:
