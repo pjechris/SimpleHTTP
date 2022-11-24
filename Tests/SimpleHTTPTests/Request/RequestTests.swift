@@ -84,6 +84,11 @@ class RequestTests: XCTestCase {
         )
     }
 
+    func test_initDelete_withBody_returnRequestWithBody() {
+        let request = Request<Void>.delete("", body: BodyMock())
+
+        XCTAssertNotNil(request.body)
+    }
 }
 
 private struct BodyMock: Encodable {

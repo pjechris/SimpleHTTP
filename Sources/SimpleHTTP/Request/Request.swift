@@ -79,7 +79,7 @@ public struct Request<Output> {
 
     /// Creates a DELETE request with a Encodable body
     public static func delete(_ path: Path, body: Encodable, query: [String: QueryParam] = [:]) -> Self {
-        self.init(path: path, method: .delete, query: query, body: nil)
+        self.init(path: path, method: .delete, query: query, body: .encodable(body))
     }
 
     /// Creates a Request.
