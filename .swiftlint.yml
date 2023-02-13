@@ -9,6 +9,7 @@ excluded:
 disabled_rules:
   - statement_position
   - type_name
+  - trailing_newline
 
 opt_in_rules:
   - closure_end_indentation

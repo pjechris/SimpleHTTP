@@ -21,14 +21,12 @@ extension CompositeInterceptor: Interceptor {
         }
     }
 
-    public func rescueRequest<Output>(_ request: Request<Output>, error: Error) -> AnyPublisher<Void, Error>? {
-        let publishers = compactMap { $0.rescueRequest(request, error: error) }
-
-        guard !publishers.isEmpty else {
-            return nil
+    public func shouldRescueRequest<Output>(_ request: Request<Output>, error: Error) async throws -> Bool {
+        for interceptor in interceptors where try await interceptor.shouldRescueRequest(request, error: error) {
+            return true
         }
 
-        return Publishers.MergeMany(publishers).eraseToAnyPublisher()
+        return false
     }
 
     public func adaptOutput<Output>(_ response: Output, for request: Request<Output>) throws -> Output {
