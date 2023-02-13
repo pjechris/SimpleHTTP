@@ -47,7 +47,7 @@ class SessionAsyncTests: XCTestCase {
 
         interceptor.rescueRequestErrorMock = { _ in
             isRescued.toggle()
-            return Just(()).setFailureType(to: Error.self).eraseToAnyPublisher()
+            return true
         }
 
         _ = try await session.response(for: .void())
@@ -120,7 +120,7 @@ private extension Request {
 }
 
 private class InterceptorStub: Interceptor {
-    var rescueRequestErrorMock: ((Error) -> AnyPublisher<Void, Error>?)?
+    var rescueRequestErrorMock: (Error) throws -> Bool = { _ in false }
     var receivedResponseMock: ((Any, Any) -> Void)?
     var adaptResponseMock: ((Any, Any) throws -> Any)?
 
@@ -128,8 +128,8 @@ private class InterceptorStub: Interceptor {
         request
     }
 
-    func rescueRequest<Output>(_ request: Request<Output>, error: Error) -> AnyPublisher<Void, Error>? {
-        rescueRequestErrorMock?(error)
+    func shouldRescueRequest<Output>(_ request: Request<Output>, error: Error) async throws -> Bool {
+        try rescueRequestErrorMock(error)
     }
 
     func adaptOutput<Output>(_ output: Output, for request: Request<Output>) throws -> Output {
