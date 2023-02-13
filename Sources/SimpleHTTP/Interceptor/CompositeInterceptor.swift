@@ -22,10 +22,8 @@ extension CompositeInterceptor: Interceptor {
     }
 
     public func shouldRescueRequest<Output>(_ request: Request<Output>, error: Error) async throws -> Bool {
-        for interceptor in interceptors {
-            if try await interceptor.shouldRescueRequest(request, error: error) {
-                return true
-            }
+        for interceptor in interceptors where try await interceptor.shouldRescueRequest(request, error: error) {
+            return true
         }
 
         return false

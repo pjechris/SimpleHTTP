@@ -12,7 +12,8 @@ class CompositeInterceptorTests: XCTestCase {
             })
         ]
 
-        let result = try await interceptors.shouldRescueRequest(Request<Void>.get("/test"), error: HTTPError(statusCode: 888))
+        let result = try await interceptors
+            .shouldRescueRequest(Request<Void>.get("/test"), error: HTTPError(statusCode: 888))
 
         XCTAssertTrue(result)
     }
