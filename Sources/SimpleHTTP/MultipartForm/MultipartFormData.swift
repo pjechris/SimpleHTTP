@@ -61,7 +61,7 @@ struct BodyPart {
     }
 
     init(headers: [Header], url: URL, length: Int) {
-        let stream = {
+        let stream: () throws -> InputStream = {
             guard let stream = InputStream(url: url) else {
                 throw MultipartFormData.Error.inputStreamCreationFailed(url)
             }
