@@ -46,7 +46,7 @@ struct MultipartFormDataEncoder {
         }
 
         encoded.append(try encodeBodyPart(headers: bodyPart.headers))
-        encoded.append(try encodeBodyPart(stream: bodyPart.stream, length: bodyPart.length))
+        encoded.append(try encodeBodyPart(stream: bodyPart.stream(), length: bodyPart.length))
 
         if bodyPart.hasFinalBoundary {
             encoded.append(Boundary.data(for: .final, boundary: boundary))

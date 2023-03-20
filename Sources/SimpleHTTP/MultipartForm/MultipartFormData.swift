@@ -48,15 +48,27 @@ enum Boundary {
 
 struct BodyPart {
     let headers: [Header]
-    let stream: InputStream
     let length: Int
+    let stream: () throws -> InputStream
+
     var hasInitialBoundary = false
     var hasFinalBoundary = false
 
-    init(headers: [Header], stream: InputStream, length: Int) {
+    init(headers: [Header], url: URL, length: Int) {
         self.headers = headers
-        self.stream = stream
+        self.stream = {
+            guard let stream = InputStream(url: url) else {
+                throw MultipartFormData.Error.inputStreamCreationFailed(url)
+            }
+            return stream
+        }
         self.length = length
+    }
+
+    init(headers: [Header], data: Data) {
+        self.headers = headers
+        self.stream = { InputStream(data: data) }
+        self.length = data.count
     }
 }
 
@@ -126,12 +138,7 @@ public struct MultipartFormData {
         }
 
         let length = fileSize.intValue
-
-        guard let stream = InputStream(url: url) else {
-            throw MultipartFormData.Error.inputStreamCreationFailed(url)
-        }
-
-        bodyParts.append(BodyPart(headers: headers, stream: stream, length: length))
+        bodyParts.append(BodyPart(headers: headers, url: url, length: length))
     }
 
     /// Creates a body part from the data and add it to the instance.
@@ -150,10 +157,8 @@ public struct MultipartFormData {
     ///   - mimeType: MIME type associated to the data in the `Content-Type` HTTPHeader.
     public mutating func add(data: Data, name: String, fileName: String? = nil, mimeType: String? = nil) {
         let headers = defineBodyPartHeader(name: name, fileName: fileName, mimeType: mimeType)
-        let stream = InputStream(data: data)
-        let length = data.count
 
-        bodyParts.append(BodyPart(headers: headers, stream: stream, length: length))
+        bodyParts.append(BodyPart(headers: headers, data: data))
     }
 
     private func defineBodyPartHeader(name: String, fileName: String?, mimeType: String?) -> [Header] {
