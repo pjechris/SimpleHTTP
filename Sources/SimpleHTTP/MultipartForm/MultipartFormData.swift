@@ -54,21 +54,24 @@ struct BodyPart {
     var hasInitialBoundary = false
     var hasFinalBoundary = false
 
-    init(headers: [Header], url: URL, length: Int) {
+    private init(headers: [Header], stream: @escaping () throws -> InputStream, length: Int) {
         self.headers = headers
-        self.stream = {
+        self.length = length
+        self.stream = stream
+    }
+
+    init(headers: [Header], url: URL, length: Int) {
+        let stream = {
             guard let stream = InputStream(url: url) else {
                 throw MultipartFormData.Error.inputStreamCreationFailed(url)
             }
             return stream
         }
-        self.length = length
+        self.init(headers: headers, stream: stream, length: length)
     }
 
     init(headers: [Header], data: Data) {
-        self.headers = headers
-        self.stream = { InputStream(data: data) }
-        self.length = data.count
+        self.init(headers: headers, stream: { InputStream(data: data) }, length: data.count)
     }
 }
 

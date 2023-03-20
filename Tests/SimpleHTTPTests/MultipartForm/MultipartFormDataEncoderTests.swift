@@ -158,4 +158,18 @@ class MultipartFormDataEncoderTests: XCTestCase {
         XCTAssertEqual(encodedData, expectedData)
     }
 
+    func test_encode_encoreMultiPartFormDataTwice_notThrow() throws {
+        let boundary = "boundary"
+        var multipart = MultipartFormData(boundary: boundary)
+
+        let data = "I'm pjechris, Nice to meet you"
+        let name1 = "data"
+        multipart.add(data: Data(data.utf8), name: name1)
+
+        var encoder = MultipartFormDataEncoder(body: multipart)
+        _ = try encoder.encode()
+
+        XCTAssertNoThrow(_ = try encoder.encode())
+    }
+
 }
