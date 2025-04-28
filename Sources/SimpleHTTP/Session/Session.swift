@@ -66,7 +66,7 @@ public class Session {
 
 extension Session {
     private func dataPublisher<Output>(for request: Request<Output>) async throws -> Response<Output> {
-        let modifiedRequest = config.interceptor.adaptRequest(request)
+        let modifiedRequest = await config.interceptor.adaptRequest(request)
         let urlRequest = try modifiedRequest
             .toURLRequest(encoder: config.encoder, relativeTo: baseURL, accepting: config.decoder)
 
