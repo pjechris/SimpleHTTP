@@ -13,7 +13,7 @@ class URLDataResponseTests: XCTestCase {
         let response = URLDataResponse(data: Data(), response: HTTPURLResponse.notFound)
         let transformer: DataErrorDecoder = { _ in
             XCTFail("transformer should not be called when data is empty")
-            throw NSError()
+            throw NSError(domain: "test", code: 0)
         }
 
         XCTAssertThrowsError(try response.validate(errorDecoder: transformer))
