@@ -15,10 +15,13 @@ public struct CompositeInterceptor: ExpressibleByArrayLiteral, Sequence {
 }
 
 extension CompositeInterceptor: Interceptor {
-    public func adaptRequest<Output>(_ request: Request<Output>) -> Request<Output> {
-        reduce(request) { request, interceptor in
-            interceptor.adaptRequest(request)
+    public func adaptRequest<Output>(_ request: Request<Output>) async -> Request<Output> {
+        var request = request
+        for interceptor in interceptors {
+          request = await interceptor.adaptRequest(request)
         }
+
+        return request
     }
 
     public func shouldRescueRequest<Output>(_ request: Request<Output>, error: Error) async throws -> Bool {
