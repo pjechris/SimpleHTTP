@@ -18,7 +18,7 @@ extension CompositeInterceptor: Interceptor {
     public func adaptRequest<Output>(_ request: Request<Output>) async -> Request<Output> {
         var request = request
         for interceptor in interceptors {
-          request = await interceptor.adaptRequest(request)
+            request = await interceptor.adaptRequest(request)
         }
 
         return request
