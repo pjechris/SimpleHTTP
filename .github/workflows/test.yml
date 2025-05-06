@@ -16,8 +16,10 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v4
 
-    - name: Lint code
-      run: swiftlint lint
+    - name: Lint PR code
+      uses: norio-nomura/action-swiftlint@3.2.1
+      env:
+        DIFF_BASE: ${{ github.base_ref }}
 
     - name: Run tests
       run: swift test
