@@ -1,13 +1,7 @@
 import XCTest
-import Combine
 @testable import SimpleHTTP
 
 class URLDataResponseTests: XCTestCase {
-    var cancellables: Set<AnyCancellable> = []
-
-    override func tearDown() {
-        cancellables = []
-    }
 
     func test_validate_responseIsError_dataIsEmpty_converterIsNotCalled() throws {
         let response = URLDataResponse(data: Data(), response: HTTPURLResponse.notFound)

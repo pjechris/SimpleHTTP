@@ -1,5 +1,4 @@
 import XCTest
-import Combine
 @testable import SimpleHTTP
 
 class SessionAsyncTests: XCTestCase {
