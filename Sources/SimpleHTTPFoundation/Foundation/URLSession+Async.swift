@@ -1,5 +1,9 @@
 import Foundation
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 extension URLSession {
     @available(iOS, deprecated: 15.0, message: "Use built-in API instead")
     public func data(for urlRequest: URLRequest) async throws -> (Data, URLResponse) {

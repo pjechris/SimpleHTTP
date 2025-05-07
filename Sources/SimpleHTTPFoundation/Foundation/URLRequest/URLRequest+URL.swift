@@ -1,5 +1,9 @@
 import Foundation
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 extension URLRequest {
     /// Return a new URLRequest whose path is relative to `baseURL`
     public func relativeTo(_ baseURL: URL) -> URLRequest {
