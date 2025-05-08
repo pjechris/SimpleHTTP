@@ -2,6 +2,10 @@ import Foundation
 import XCTest
 @testable import SimpleHTTPFoundation
 
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+
 class URLRequestURLTests: XCTestCase {
     func test_relativeTo_requestURLHasBaseURL() {
         let request = URLRequest(url: URL(string: "path")!)
