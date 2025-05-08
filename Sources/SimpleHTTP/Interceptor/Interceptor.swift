@@ -5,7 +5,7 @@ public typealias Interceptor = RequestInterceptor & ResponseInterceptor
 /// a protocol intercepting a session request
 public protocol RequestInterceptor {
     /// Should be called before making the request to provide modifications to `request`
-    func adaptRequest<Output>(_ request: Request<Output>) async -> Request<Output>
+    func adaptRequest<Output>(_ request: Request<Output>) async throws -> Request<Output>
 
     /// catch and retry a failed request
     /// - Returns: nil if the request should not be retried. Otherwise a publisher that will be executed before
