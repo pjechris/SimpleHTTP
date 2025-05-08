@@ -1,5 +1,4 @@
 import Foundation
-import Combine
 
 public typealias Interceptor = RequestInterceptor & ResponseInterceptor
 

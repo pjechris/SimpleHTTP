@@ -10,14 +10,16 @@ on:
 
 jobs:
   test:
-    runs-on: macos-11
+    runs-on: macos-latest
 
     steps:
     - name: Checkout repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
-    - name: Lint code
-      run: swiftlint lint
+    - name: Lint PR code
+      uses: stanfordbdhg/action-swiftlint@v4
+      env:
+        DIFF_BASE: ${{ github.base_ref }}
 
     - name: Run tests
-      run: swift test --enable-test-discovery
+      run: swift test

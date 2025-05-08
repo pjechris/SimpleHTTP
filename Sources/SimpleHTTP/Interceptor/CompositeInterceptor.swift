@@ -1,5 +1,4 @@
 import Foundation
-import Combine
 
 /// Use an Array of `Interceptor` as a single `Interceptor`
 public struct CompositeInterceptor: ExpressibleByArrayLiteral, Sequence {
