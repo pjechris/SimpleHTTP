@@ -1,9 +1,13 @@
 import Foundation
 
-struct FormURLEncoder: ContentDataEncoder {
-    static let contentType: HTTPContentType = .formURLEncoded
+public struct FormURLEncoder: ContentDataEncoder {
+    public static let contentType: HTTPContentType = .formURLEncoded
 
-    func encode<T: Encodable>(_ value: T) throws -> Data {
+    public init() {
+
+    }
+
+    public func encode<T: Encodable>(_ value: T) throws -> Data {
         let encoder = FormKeyValueEncoder()
         try value.encode(to: encoder)
 
