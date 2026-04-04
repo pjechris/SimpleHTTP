@@ -3,8 +3,11 @@ import XCTest
 
 class SessionAsyncTests: XCTestCase {
     let baseURL = URL(string: "https://sessionTests.io")!
-    let encoder = JSONEncoder()
-    let decoder = JSONDecoder()
+    let data = ContentDataCoderConfiguration(
+        default: .json,
+        encoder: [.json: JSONEncoder()],
+        decoder: [.json: JSONDecoder()]
+    )
 
     func test_response_responseIsValid_decodedOutputIsReturned() async throws {
         let expectedResponse = Content(value: "response")
@@ -21,7 +24,7 @@ class SessionAsyncTests: XCTestCase {
         let interceptor = InterceptorStub()
         let session = sesssionStub(
             interceptor: [interceptor],
-            data: { URLDataResponse(data: try! JSONEncoder().encode(output), response: .success) }
+            response: { URLDataResponse(data: try! JSONEncoder().encode(output), response: .success) }
         )
 
         interceptor.adaptResponseMock = { _, _ in
@@ -73,7 +76,7 @@ class SessionAsyncTests: XCTestCase {
     func test_response_httpDataHasCustomError_returnCustomError() async throws {
         let session = Session(
             baseURL: baseURL,
-            configuration: SessionConfiguration(encoder: encoder, decoder: decoder, dataError: CustomError.self),
+            configuration: SessionConfiguration(data: data, dataError: CustomError.self),
             dataTask: { _ in
                 URLDataResponse(data: try! JSONEncoder().encode(CustomError()), response: .unauthorized)
             })
@@ -88,11 +91,11 @@ class SessionAsyncTests: XCTestCase {
     }
 
     /// helper to create a session for testing
-    private func sesssionStub(interceptor: CompositeInterceptor = [], data: @escaping () throws -> URLDataResponse)
+    private func sesssionStub(interceptor: CompositeInterceptor = [], response: @escaping () throws -> URLDataResponse)
     -> Session {
-        let config = SessionConfiguration(encoder: encoder, decoder: decoder, interceptors: interceptor)
+        let config = SessionConfiguration(data: data, interceptors: interceptor)
 
-        return Session(baseURL: baseURL, configuration: config, dataTask: { _ in try data() })
+        return Session(baseURL: baseURL, configuration: config, dataTask: { _ in try response() })
     }
 }
 

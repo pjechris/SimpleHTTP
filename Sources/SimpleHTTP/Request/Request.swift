@@ -22,6 +22,8 @@ public struct Request<Output> {
     public let method: Method
     public let body: Body?
     public let query: [String: QueryParam]
+    /// content type to use for encoding the request body. If nil, the session default is used
+    public var contentType: HTTPContentType?
     public var cachePolicy: URLRequest.CachePolicy = .useProtocolCachePolicy
     public var headers: HTTPHeaderFields = [:]
 

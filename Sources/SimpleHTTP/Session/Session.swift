@@ -44,8 +44,12 @@ public class Session {
     public func response<Output: Decodable>(for request: Request<Output>) async throws -> Output {
         let result = try await dataPublisher(for: request)
 
+        guard let decoder = config.data.decoder[result.contentType] else {
+            throw SessionConfigurationError.missingDecoder(result.contentType)
+        }
+
         do {
-            let decodedOutput = try config.decoder.decode(Output.self, from: result.data)
+            let decodedOutput = try decoder.decode(Output.self, from: result.data)
             let output = try config.interceptor.adaptOutput(decodedOutput, for: result.request)
 
             log(.success(output), for: result.request)
@@ -67,15 +71,21 @@ public class Session {
 extension Session {
     private func dataPublisher<Output>(for request: Request<Output>) async throws -> Response<Output> {
         let modifiedRequest = try await config.interceptor.adaptRequest(request)
-        let urlRequest = try modifiedRequest
-            .toURLRequest(encoder: config.encoder, relativeTo: baseURL, accepting: config.decoder)
+        let requestContentType = modifiedRequest.contentType ?? config.data.defaultType
+
+        guard let encoder = config.data.encoder[requestContentType] else {
+            throw SessionConfigurationError.missingEncoder(requestContentType)
+        }
+
+        let urlRequest = try modifiedRequest.toURLRequest(encoder: encoder, relativeTo: baseURL)
 
         do {
             let result = try await dataTask(urlRequest)
+            let responseContentType = result.response.mimeType.map(HTTPContentType.init(value:)) ?? config.data.defaultType
 
-            try result.validate(errorDecoder: config.errorConverter)
+            try result.validate(errorDecoder: errorDecoder(for: responseContentType))
 
-            return Response(data: result.data, request: modifiedRequest)
+            return Response(data: result.data, contentType: responseContentType, request: modifiedRequest)
         }
         catch {
             self.log(.failure(error), for: modifiedRequest)
@@ -91,9 +101,18 @@ extension Session {
     private func log<Output>(_ response: Result<Output, Error>, for request: Request<Output>) {
         config.interceptor.receivedResponse(response, for: request)
     }
+
+    private func errorDecoder(for contentType: HTTPContentType) throws -> DataErrorDecoder? {
+        guard let converter = config.errorConverter else {
+            return nil
+        }
+
+        return { data in try converter(data, contentType) }
+    }
 }
 
 private struct Response<Output> {
     let data: Data
+    let contentType: HTTPContentType
     let request: Request<Output>
 }
