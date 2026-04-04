@@ -24,3 +24,5 @@ public protocol ContentDataDecoder: DataDecoder {
 
 /// A function converting data when a http error occur into a custom error
 public typealias DataErrorDecoder = (Data) throws -> Error
+
+public typealias ContentDataErrorDecoder = (Data, HTTPContentType) throws -> Error

@@ -2,44 +2,46 @@ import Foundation
 
 /// a type defining some parameters for a `Session`
 public struct SessionConfiguration {
-    /// encoder to use for request bodies
-    let encoder: ContentDataEncoder
-    /// decoder used to decode http responses
-    let decoder: ContentDataDecoder
+    /// data encoders/decoders configuration per content type
+    let data: ContentDataCoderConfiguration
     /// queue on which to decode data
     let decodingQueue: DispatchQueue
     /// an interceptor to apply custom behavior on the session requests/responses.
     /// To apply multiple interceptors use `ComposeInterceptor`
     let interceptor: Interceptor
-    /// a function decoding data (using `decoder`) as a custom error
-    private(set) var errorConverter: DataErrorDecoder?
+    /// a function decoding data as a custom error given the response content type
+    private(set) var errorConverter: ContentDataErrorDecoder?
 
-    /// - Parameter encoder to use for request bodies
-    /// - Parameter decoder used to decode http responses
+    /// - Parameter data: encoders/decoders configuration per content type
     /// - Parameter decodeQueue: queue on which to decode data
     /// - Parameter interceptors: interceptor list to apply on the session requests/responses
     public init(
-        encoder: ContentDataEncoder = JSONEncoder(),
-        decoder: ContentDataDecoder = JSONDecoder(),
+        data: ContentDataCoderConfiguration = .init(),
         decodingQueue: DispatchQueue = .main,
         interceptors: CompositeInterceptor = []) {
-            self.encoder = encoder
-            self.decoder = decoder
+            self.data = data
             self.decodingQueue = decodingQueue
             self.interceptor = interceptors
         }
 
     /// - Parameter dataError: Error type to use when having error with data
     public init<DataError: Error & Decodable>(
-        encoder: ContentDataEncoder = JSONEncoder(),
-        decoder: ContentDataDecoder = JSONDecoder(),
+        data: ContentDataCoderConfiguration,
         decodingQueue: DispatchQueue = .main,
         interceptors: CompositeInterceptor = [],
         dataError: DataError.Type
     ) {
-        self.init(encoder: encoder, decoder: decoder, decodingQueue: decodingQueue, interceptors: interceptors)
-        self.errorConverter = {
-            try decoder.decode(dataError, from: $0)
+        self.init(data: data, decodingQueue: decodingQueue, interceptors: interceptors)
+        self.errorConverter = { [decoder=data.decoder] data, contentType in
+            guard let decoder = decoder[contentType] else {
+                throw SessionConfigurationError.missingDecoder(contentType)
+            }
+            return try decoder.decode(dataError, from: data)
         }
     }
+}
+
+public enum SessionConfigurationError: Error {
+    case missingEncoder(HTTPContentType)
+    case missingDecoder(HTTPContentType)
 }
