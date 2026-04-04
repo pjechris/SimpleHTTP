@@ -71,9 +71,19 @@ public class Session {
 extension Session {
     private func dataPublisher<Output>(for request: Request<Output>) async throws -> Response<Output> {
         let modifiedRequest = try await config.interceptor.adaptRequest(request)
-        let requestContentType = modifiedRequest.contentType ?? config.data.defaultType
+        let requestContentType = modifiedRequest.headers.contentType ?? config.data.defaultType
+        let encoder: ContentDataEncoder?
 
-        guard let encoder = config.data.encoder[requestContentType] else {
+        // FIXME: we also check body inside toURLRequest
+        switch modifiedRequest.body {
+        case .encodable:
+            encoder = config.data.encoder[requestContentType]
+        case .multipart, .none:
+            // this one is supposed to never be nil
+            encoder = config.data.encoder[config.data.defaultType]
+        }
+
+        guard let encoder else {
             throw SessionConfigurationError.missingEncoder(requestContentType)
         }
 

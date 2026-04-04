@@ -31,3 +31,18 @@ extension HTTPHeader {
     public static let proxyAuthorization: Self = "Proxy-Authorization"
     public static let wwwAuthenticate: Self = "WWW-Authenticate"
 }
+
+public extension HTTPHeaderFields {
+    /// - Returns the content type if HTTPHeader.contentType was set
+    var contentType: HTTPContentType? {
+        self[.contentType].map(HTTPContentType.init(value:))
+    }
+
+    func contentType(_ value: HTTPContentType) -> Self {
+        var copy = self
+
+        copy[.contentType] = value.value
+
+        return copy
+    }
+}
