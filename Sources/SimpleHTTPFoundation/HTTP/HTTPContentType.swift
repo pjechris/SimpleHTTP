@@ -1,7 +1,7 @@
 import Foundation
 
 /// A struct representing a http header content type value
-public struct HTTPContentType: Hashable, ExpressibleByStringLiteral {
+public struct HTTPContentType: Hashable, Sendable, ExpressibleByStringLiteral {
     public let value: String
 
     public init(value: String) {
