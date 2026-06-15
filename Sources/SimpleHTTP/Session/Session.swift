@@ -44,7 +44,7 @@ public class Session {
     public func response<Output: Decodable>(for request: Request<Output>) async throws -> Output {
         let result = try await dataPublisher(for: request)
 
-        guard let decoder = config.data.decoder[result.contentType] else {
+        guard let decoder = config.data.decoders[result.contentType] else {
             throw SessionConfigurationError.missingDecoder(result.contentType)
         }
 
@@ -77,10 +77,10 @@ extension Session {
         // FIXME: we also check body inside toURLRequest
         switch modifiedRequest.body {
         case .encodable:
-            encoder = config.data.encoder[requestContentType]
+            encoder = config.data.encoders[requestContentType]
         case .multipart, .none:
             // this one is supposed to never be nil
-            encoder = config.data.encoder[config.data.defaultType]
+            encoder = config.data.encoders[config.data.defaultType]
         }
 
         guard let encoder else {
