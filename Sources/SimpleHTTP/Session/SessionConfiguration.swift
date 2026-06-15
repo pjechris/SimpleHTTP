@@ -3,7 +3,7 @@ import Foundation
 /// a type defining some parameters for a `Session`
 public struct SessionConfiguration {
     /// data encoders/decoders configuration per content type
-    let data: ContentDataCoderConfiguration
+    let data: ContentDataCodersConfiguration
     /// queue on which to decode data
     let decodingQueue: DispatchQueue
     /// an interceptor to apply custom behavior on the session requests/responses.
@@ -16,7 +16,7 @@ public struct SessionConfiguration {
     /// - Parameter decodeQueue: queue on which to decode data
     /// - Parameter interceptors: interceptor list to apply on the session requests/responses
     public init(
-        data: ContentDataCoderConfiguration = .init(),
+        data: ContentDataCodersConfiguration = .init(),
         decodingQueue: DispatchQueue = .main,
         interceptors: CompositeInterceptor = []) {
             self.data = data
@@ -26,14 +26,14 @@ public struct SessionConfiguration {
 
     /// - Parameter dataError: Error type to use when having error with data
     public init<DataError: Error & Decodable>(
-        data: ContentDataCoderConfiguration,
+        data: ContentDataCodersConfiguration,
         decodingQueue: DispatchQueue = .main,
         interceptors: CompositeInterceptor = [],
         dataError: DataError.Type
     ) {
         self.init(data: data, decodingQueue: decodingQueue, interceptors: interceptors)
-        self.errorConverter = { [decoder=data.decoder] data, contentType in
-            guard let decoder = decoder[contentType] else {
+        self.errorConverter = { [decoders=data.decoders] data, contentType in
+            guard let decoder = decoders[contentType] else {
                 throw SessionConfigurationError.missingDecoder(contentType)
             }
             return try decoder.decode(dataError, from: data)

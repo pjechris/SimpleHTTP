@@ -52,11 +52,7 @@ You can also use a `Session` object. [`Session`](https://pjechris.github.io/Simp
 
 ```swift
 
-let session = Session(
-  baseURL: URL(string: "https://github.com")!,
-  encoder: JSONEncoder(),
-  decoder: JSONDecoder()
-)
+let session = Session(baseURL: URL(string: "https://github.com")!)
 
 try await session.response(for: .login(UserBody(username: "pjechris", password: "MyPassword")))
 
@@ -65,8 +61,23 @@ try await session.response(for: .login(UserBody(username: "pjechris", password: 
 A few words about Session:
 
 - `baseURL` will be prepended to all call paths
-- You can skip encoder and decoder if you use JSON
+- By default JSON is used for both encoding and decoding, so you don't have to configure anything for JSON APIs
 - You can provide a custom `URLSession` instance if ever needed
+
+### Customizing encoders/decoders
+
+Encoders and decoders are configured per content type through a `SessionConfiguration`. Pass a `ContentDataCodersConfiguration` to register the coders you need:
+
+```swift
+let session = Session(
+  baseURL: URL(string: "https://github.com")!,
+  configuration: SessionConfiguration(
+    data: ContentDataCodersConfiguration()
+      .encoding(.json, with: JSONEncoder())
+      .decoding(.json, with: JSONDecoder())
+  )
+)
+```
 
 ## Send a body
 

@@ -3,10 +3,10 @@ import XCTest
 
 class SessionAsyncTests: XCTestCase {
     let baseURL = URL(string: "https://sessionTests.io")!
-    let data = ContentDataCoderConfiguration(
+    let data = ContentDataCodersConfiguration(
         default: .json,
-        encoder: [.json: JSONEncoder()],
-        decoder: [.json: JSONDecoder()]
+        encoders: [.json: JSONEncoder()],
+        decoders: [.json: JSONDecoder()]
     )
 
     func test_response_responseIsValid_decodedOutputIsReturned() async throws {
