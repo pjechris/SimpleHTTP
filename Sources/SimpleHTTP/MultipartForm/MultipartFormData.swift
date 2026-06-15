@@ -7,7 +7,7 @@ import MobileCoreServices
 import CoreServices
 #endif
 
-struct Header: Hashable {
+struct Header: Hashable, Sendable {
     let name: HTTPHeader
     let value: String
 }
@@ -16,9 +16,9 @@ enum EncodingCharacters {
     static let crlf = "\r\n"
 }
 
-enum Boundary {
+enum Boundary: Sendable {
 
-    enum `Type` {
+    enum `Type`: Sendable {
         case initial
         case encapsulated
         case final
@@ -49,19 +49,19 @@ enum Boundary {
 struct BodyPart {
     let headers: [Header]
     let length: Int
-    let stream: () throws -> InputStream
+    let stream: @Sendable () throws -> InputStream
 
     var hasInitialBoundary = false
     var hasFinalBoundary = false
 
-    private init(headers: [Header], stream: @escaping () throws -> InputStream, length: Int) {
+    private init(headers: [Header], stream: @Sendable @escaping () throws -> InputStream, length: Int) {
         self.headers = headers
         self.length = length
         self.stream = stream
     }
 
     init(headers: [Header], url: URL, length: Int) {
-        let stream: () throws -> InputStream = {
+        let stream: @Sendable () throws -> InputStream = {
             guard let stream = InputStream(url: url) else {
                 throw MultipartFormData.Error.inputStreamCreationFailed(url)
             }

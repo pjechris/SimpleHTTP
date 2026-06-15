@@ -1,6 +1,6 @@
 import Foundation
 
-public struct URLDataResponse {
+public struct URLDataResponse: Sendable {
     public let data: Data
     public let response: HTTPURLResponse
 

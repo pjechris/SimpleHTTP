@@ -4,7 +4,7 @@ import Foundation
 public typealias HTTPHeaderFields = [HTTPHeader: String]
 
 /// A struct representing a http request header key
-public struct HTTPHeader: Hashable, ExpressibleByStringLiteral {
+public struct HTTPHeader: Hashable, Sendable, ExpressibleByStringLiteral {
     public let key: String
 
     public init(stringLiteral value: StringLiteralType) {
@@ -17,7 +17,7 @@ extension HTTPHeader {
     public static let authentication: Self = "Authentication"
     public static let authorization: Self = "Authorization"
     public static let contentType: Self = "Content-Type"
-    public static var contentDisposition: Self = "Content-Disposition"
+    public static let contentDisposition: Self = "Content-Disposition"
 }
 
 // swiftlint:disable line_length

@@ -1,6 +1,6 @@
 import Foundation
 
-public enum Method: String {
+public enum Method: String, Sendable {
     case get
     case post
     case put

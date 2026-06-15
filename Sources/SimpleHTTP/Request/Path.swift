@@ -21,7 +21,7 @@ import Foundation
 ///
 /// let user: Path = .myPaths.user
 /// ```
-public struct Path: Equatable, ExpressibleByStringLiteral, ExpressibleByStringInterpolation {
+public struct Path: Equatable, Sendable, ExpressibleByStringLiteral, ExpressibleByStringInterpolation {
     /// relative path
     public let value: String
 
