@@ -41,6 +41,7 @@ public class Session {
     ///
     /// The request is validated and decoded appropriately on success.
     /// - Returns: a async Output on success, an error otherwise
+    @concurrent
     public func response<Output: Decodable>(for request: Request<Output>) async throws -> Output {
         let result = try await dataPublisher(for: request)
 
@@ -62,6 +63,7 @@ public class Session {
     }
 
     /// Perform asynchronously `request` which has no return value
+    @concurrent
     public func response(for request: Request<Void>) async throws {
         let result = try await dataPublisher(for: request)
         log(.success(()), for: result.request)
