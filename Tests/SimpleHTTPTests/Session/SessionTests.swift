@@ -1,6 +1,7 @@
 import XCTest
 @testable import SimpleHTTP
 
+@MainActor
 class SessionAsyncTests: XCTestCase {
     let baseURL = URL(string: "https://sessionTests.io")!
     let data = ContentDataCodersConfiguration(
