@@ -4,7 +4,7 @@ public typealias ContentDataEncodersConfiguration = [HTTPContentType: ContentDat
 public typealias ContentDataDecodersConfiguration = [HTTPContentType: ContentDataDecoder]
 
 /// Defines the list of encoders and decoders to use.
-public struct ContentDataCodersConfiguration {
+public struct ContentDataCodersConfiguration: Sendable {
     public var encoders: ContentDataEncodersConfiguration
     public var decoders: ContentDataDecodersConfiguration
     public let defaultType: HTTPContentType

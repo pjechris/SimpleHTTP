@@ -1,12 +1,12 @@
 import Foundation
 
 /// A encoder suited to encode to Data
-public protocol DataEncoder {
+public protocol DataEncoder: Sendable {
     func encode<T: Encodable>(_ value: T) throws -> Data
 }
 
 /// A decoder suited to decode Data
-public protocol DataDecoder {
+public protocol DataDecoder: Sendable {
     func decode<T: Decodable>(_ type: T.Type, from: Data) throws -> T
 }
 
@@ -23,6 +23,6 @@ public protocol ContentDataDecoder: DataDecoder {
 }
 
 /// A function converting data when a http error occur into a custom error
-public typealias DataErrorDecoder = (Data) throws -> Error
+public typealias DataErrorDecoder = @Sendable (Data) throws -> Error
 
-public typealias ContentDataErrorDecoder = (Data, HTTPContentType) throws -> Error
+public typealias ContentDataErrorDecoder = @Sendable (Data, HTTPContentType) throws -> Error
