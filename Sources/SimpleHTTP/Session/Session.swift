@@ -1,9 +1,9 @@
 import Foundation
 
 /// Primary class of the library used to perform http request using a `Request` object
-public class Session {
+final public class Session: Sendable {
     /// a function returning a `RequestData` from a `URLRequest`
-    public typealias URLRequestTask = (URLRequest) async throws -> URLDataResponse
+    public typealias URLRequestTask = @Sendable (URLRequest) async throws -> URLDataResponse
 
     let baseURL: URL
     let config: SessionConfiguration

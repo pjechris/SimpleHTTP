@@ -1,7 +1,7 @@
 import Foundation
 
 /// a type defining some parameters for a `Session`
-public struct SessionConfiguration {
+public struct SessionConfiguration: Sendable {
     /// data encoders/decoders configuration per content type
     let data: ContentDataCodersConfiguration
     /// an interceptor to apply custom behavior on the session requests/responses.

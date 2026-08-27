@@ -20,7 +20,7 @@ class CompositeInterceptorTests: XCTestCase {
 }
 
 private struct InterceptorStub: Interceptor {
-    var shouldRequestMock: (Error) throws -> Bool = { _ in false }
+    var shouldRequestMock: @Sendable (Error) throws -> Bool = { _ in false }
 
     func shouldRescueRequest<Output>(_ request: Request<Output>, error: Error) async throws -> Bool {
         try shouldRequestMock(error)

@@ -3,7 +3,7 @@ import Foundation
 public typealias Interceptor = RequestInterceptor & ResponseInterceptor
 
 /// a protocol intercepting a session request
-public protocol RequestInterceptor {
+public protocol RequestInterceptor: Sendable {
     /// Should be called before making the request to provide modifications to `request`
     func adaptRequest<Output>(_ request: Request<Output>) async throws -> Request<Output>
 
@@ -14,7 +14,7 @@ public protocol RequestInterceptor {
 }
 
 /// a protocol intercepting a session response
-public protocol ResponseInterceptor {
+public protocol ResponseInterceptor: Sendable {
     /// Should be called once the request is done and output was received. Let one last chance to modify the output
     /// optionally throwing an error instead if needed
     /// - Parameter request: the request that was sent to the server

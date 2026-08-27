@@ -1,6 +1,7 @@
 import XCTest
 @testable import SimpleHTTP
 
+@MainActor
 class SessionAsyncTests: XCTestCase {
     let baseURL = URL(string: "https://sessionTests.io")!
     let data = ContentDataCodersConfiguration(
@@ -41,7 +42,7 @@ class SessionAsyncTests: XCTestCase {
     }
 
     func test_response_rescue_rescueIsSuccess_itRetryRequest() async throws {
-        var isRescued = false
+        nonisolated(unsafe) var isRescued = false
         let interceptor = InterceptorStub()
         let session = sesssionStub(interceptor: [interceptor]) {
             URLDataResponse(data: Data(), response: isRescued ? .success : .unauthorized)
@@ -91,8 +92,10 @@ class SessionAsyncTests: XCTestCase {
     }
 
     /// helper to create a session for testing
-    private func sesssionStub(interceptor: CompositeInterceptor = [], response: @escaping () throws -> URLDataResponse)
-    -> Session {
+    private func sesssionStub(
+        interceptor: CompositeInterceptor = [],
+        response: @Sendable @escaping () throws -> URLDataResponse
+    ) -> Session {
         let config = SessionConfiguration(data: data, interceptors: interceptor)
 
         return Session(baseURL: baseURL, configuration: config, dataTask: { _ in try response() })
@@ -121,10 +124,10 @@ private extension Request {
     }
 }
 
-private class InterceptorStub: Interceptor {
-    var rescueRequestErrorMock: (Error) throws -> Bool = { _ in false }
-    var receivedResponseMock: ((Any, Any) -> Void)?
-    var adaptResponseMock: ((Any, Any) throws -> Any)?
+final private class InterceptorStub: Interceptor, @unchecked Sendable {
+    var rescueRequestErrorMock: @Sendable (Error) throws -> Bool = { _ in false }
+    var receivedResponseMock: (@Sendable (Any, Any) -> Void)?
+    var adaptResponseMock: (@Sendable (Any, Any) throws -> Any)?
 
     func adaptRequest<Output>(_ request: Request<Output>) -> Request<Output> {
         request

@@ -3,9 +3,14 @@
 
 import PackageDescription
 
+let approachableConcurrency: [SwiftSetting] = [
+    .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+    .enableUpcomingFeature("InferIsolatedConformances")
+]
+
 let package = Package(
     name: "SimpleHTTP",
-    platforms: [.iOS(.v13), .macOS(.v10_15)],
+    platforms: [.iOS(.v13), .macOS(.v13)],
     products: [
         .library(name: "SimpleHTTPFoundation", targets: ["SimpleHTTPFoundation"]),
         .library(name: "SimpleHTTP", targets: ["SimpleHTTP"])
@@ -13,16 +18,21 @@ let package = Package(
     dependencies: [
     ],
     targets: [
-        .target(name: "SimpleHTTPFoundation", dependencies: []),
-        .target(name: "SimpleHTTP", dependencies: ["SimpleHTTPFoundation"]),
-        .testTarget(name: "SimpleHTTPFoundationTests", dependencies: ["SimpleHTTPFoundation"]),
+        .target(name: "SimpleHTTPFoundation", dependencies: [], swiftSettings: approachableConcurrency),
+        .target(name: "SimpleHTTP", dependencies: ["SimpleHTTPFoundation"], swiftSettings: approachableConcurrency),
+        .testTarget(
+            name: "SimpleHTTPFoundationTests",
+            dependencies: ["SimpleHTTPFoundation"],
+            swiftSettings: approachableConcurrency
+        ),
         .testTarget(
             name: "SimpleHTTPTests",
             dependencies: ["SimpleHTTP"],
             resources:  [
                 .copy("Ressources/Images/swift.png"),
                 .copy("Ressources/Images/swiftUI.png")
-            ]
+            ],
+            swiftSettings: approachableConcurrency
         )
     ]
 )
