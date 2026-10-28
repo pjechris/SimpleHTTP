@@ -9,30 +9,26 @@ public struct ContentDataCodersConfiguration {
     public var decoders: ContentDataDecodersConfiguration
     public let defaultType: HTTPContentType
 
+    /// - Parameter default: the default type. This will be used when:
+    ///   - No encoding type is provided inside the request
+    ///   - Response does not set **an explicit type**
+    /// - Parameter encoders: Encoders to use. They will be merged with `defaultEncoders`
+    /// - Parameter decoders: Decoders to use. They will be merged with `defaultDecoders`
     public init(
         default: HTTPContentType,
         encoders: ContentDataEncodersConfiguration,
         decoders: ContentDataDecodersConfiguration,
     ) {
-        self.encoders = encoders
-        self.decoders = decoders
+        self.encoders = .defaultEncoders.merging(encoders) { $1 }
+        self.decoders = .defaultDecoders.merging(decoders) { $1 }
         self.defaultType = `default`
     }
 
-    /// Creates a configuration with default coders and decoders.
+    /// Creates a configuration with default coders and decoders
     ///
     /// - Note: default encoder/decoder is set to JSON
     public init() {
-        self.init(
-            default: .json,
-            encoders: [
-                .json: JSONEncoder(),
-                .formURLEncoded: FormURLEncoder()
-            ],
-            decoders: [
-                .json: JSONDecoder()
-            ]
-        )
+        self.init(default: .json, encoders: [:], decoders: [:])
     }
 }
 
@@ -49,5 +45,22 @@ extension ContentDataCodersConfiguration {
         var copy = self
         copy.decoders[contentType] = decoder
         return copy
+    }
+}
+
+public extension ContentDataEncodersConfiguration {
+    static var defaultEncoders: Self {
+        [
+            .json: JSONEncoder(),
+            .formURLEncoded: FormURLEncoder()
+        ]
+    }
+}
+
+public extension ContentDataDecodersConfiguration {
+    static var defaultDecoders: Self {
+        [
+            .json: JSONDecoder()
+        ]
     }
 }
