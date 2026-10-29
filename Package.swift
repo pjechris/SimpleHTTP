@@ -10,7 +10,7 @@ let approachableConcurrency: [SwiftSetting] = [
 
 let package = Package(
     name: "SimpleHTTP",
-    platforms: [.iOS(.v13), .macOS(.v13)],
+    platforms: [.iOS(.v14), .macOS(.v13)],
     products: [
         .library(name: "SimpleHTTPFoundation", targets: ["SimpleHTTPFoundation"]),
         .library(name: "SimpleHTTP", targets: ["SimpleHTTP"])
