@@ -8,15 +8,15 @@ public enum Method: String, Sendable {
     case delete
 }
 
-public enum Body {
-    case encodable(Encodable)
+public enum Body: Sendable {
+    case encodable(any Encodable & Sendable)
     case multipart(MultipartFormData)
 }
 
 /// A HTTP request safely typed for an `Output` response
 ///
 /// Highly inspired by https://swiftwithmajid.com/2021/02/10/building-type-safe-networking-in-swift/
-public struct Request<Output> {
+public struct Request<Output>: Sendable {
     /// request relative path
     public let path: Path
     public let method: Method
@@ -31,7 +31,7 @@ public struct Request<Output> {
     }
 
     /// Creates a request suitable for a HTTP POST with a `Encodable` body
-    public static func post(_ path: Path, body: Encodable?, query: [String: QueryParam] = [:])
+    public static func post(_ path: Path, body: (any Encodable & Sendable)?, query: [String: QueryParam] = [:])
     -> Self {
         self.init(path: path, method: .post, query: query, body: body.map(Body.encodable))
     }
