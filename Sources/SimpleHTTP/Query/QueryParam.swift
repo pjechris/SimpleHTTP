@@ -1,13 +1,13 @@
 import Foundation
 
 /// Protocol allowing to use a type as a query parameter
-public protocol QueryParam {
+public protocol QueryParam: Sendable {
     /// the parameter value
     var queryValue: QueryValue? { get }
 }
 
 /// Query parameter value
-public enum QueryValue: Equatable {
+public enum QueryValue: Equatable, Sendable {
     case single(String)
     case collection([String])
 }

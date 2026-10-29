@@ -44,7 +44,7 @@ public struct Request<Output> {
     }
 
     /// Creates a request suitable for a HTTP PUT with a `Encodable` body
-    public static func put(_ path: Path, body: Encodable, query: [String: QueryParam] = [:])
+    public static func put(_ path: Path, body: any Encodable & Sendable, query: [String: QueryParam] = [:])
     -> Self {
         self.init(path: path, method: .put, query: query, body: .encodable(body))
     }
@@ -61,7 +61,7 @@ public struct Request<Output> {
     }
 
     /// Creates a request suitable for a HTTP PATCH with a `Encodable` body
-    public static func patch(_ path: Path, body: Encodable, query: [String: QueryParam] = [:])
+    public static func patch(_ path: Path, body: any Encodable & Sendable, query: [String: QueryParam] = [:])
     -> Self {
         self.init(path: path, method: .patch, query: query, body: .encodable(body))
     }
@@ -78,7 +78,7 @@ public struct Request<Output> {
     }
 
     /// Creates a DELETE request with a Encodable body
-    public static func delete(_ path: Path, body: Encodable, query: [String: QueryParam] = [:]) -> Self {
+    public static func delete(_ path: Path, body: any Encodable & Sendable, query: [String: QueryParam] = [:]) -> Self {
         self.init(path: path, method: .delete, query: query, body: .encodable(body))
     }
 
