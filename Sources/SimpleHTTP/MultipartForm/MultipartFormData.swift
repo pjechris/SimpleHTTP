@@ -1,12 +1,6 @@
 import Foundation
 import UniformTypeIdentifiers
 
-#if os(iOS) || os(watchOS) || os(tvOS)
-import MobileCoreServices
-#elseif os(macOS)
-import CoreServices
-#endif
-
 struct Header: Hashable, Sendable {
     let name: HTTPHeader
     let value: String
@@ -157,27 +151,11 @@ public struct MultipartFormData: Sendable {
     }
 
     private func mimeType(from url: URL) -> String {
-        if #available(iOS 14.0, *), #available(macOS 11.0, *) {
-            guard let type = UTType(filenameExtension: url.pathExtension), let mime = type.preferredMIMEType else {
-                return HTTPContentType.octetStream.value
-            }
-
-            return mime
+        guard let type = UTType(filenameExtension: url.pathExtension), let mime = type.preferredMIMEType else {
+            return HTTPContentType.octetStream.value
         }
 
-        let contentType = UTTypeCreatePreferredIdentifierForTag(
-            kUTTagClassFilenameExtension,
-            url.pathExtension as CFString,
-            nil
-        )
-            .flatMap { UTTypeCopyPreferredTagWithClass($0.takeRetainedValue(), kUTTagClassMIMEType) }
-            .map { $0.takeRetainedValue() }
-
-        if let contentType = contentType {
-            return contentType as String
-        }
-
-        return HTTPContentType.octetStream.value
+        return mime
     }
 
 }
