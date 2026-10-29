@@ -46,51 +46,29 @@ enum Boundary: Sendable {
     }
 }
 
-struct BodyPart {
+struct BodyPart: Sendable {
+    enum Content: Sendable {
+        case data(Data)
+        case file(URL)
+    }
+
     let headers: [Header]
-    let length: Int
-    let stream: @Sendable () throws -> InputStream
-
-    var hasInitialBoundary = false
-    var hasFinalBoundary = false
-
-    private init(headers: [Header], stream: @Sendable @escaping () throws -> InputStream, length: Int) {
-        self.headers = headers
-        self.length = length
-        self.stream = stream
-    }
-
-    init(headers: [Header], url: URL, length: Int) {
-        let stream: @Sendable () throws -> InputStream = {
-            guard let stream = InputStream(url: url) else {
-                throw MultipartFormData.Error.inputStreamCreationFailed(url)
-            }
-            return stream
-        }
-        self.init(headers: headers, stream: stream, length: length)
-    }
-
-    init(headers: [Header], data: Data) {
-        self.init(headers: headers, stream: { InputStream(data: data) }, length: data.count)
-    }
+    let content: Content
 }
 
 /// Constructs `multipart/form-data` for uploads within an HTTP or HTTPS body.
 /// We encode the data directly in memory. It's very efficient, but can lead to memory issues if the dataset is too large (eg: a Video)
 ///
 /// `Warning`: A Second approch to encode bigger dataset will be addes later
-public struct MultipartFormData {
+public struct MultipartFormData: Sendable {
     let boundary: String
-    let fileManager: FileManager
     var bodyParts = [BodyPart]()
 
     /// Creates an instance
     ///
     /// - Parameters:
-    ///   - fileManager: `FileManager` to use for file operation, if needed
     ///   - boundary: `String` used to separate body parts
-    public init(fileManager: FileManager = .default, boundary: String? = nil) {
-        self.fileManager = fileManager
+    public init(boundary: String? = nil) {
         self.boundary = boundary ?? Boundary.random()
     }
 
@@ -136,12 +114,9 @@ public struct MultipartFormData {
     public mutating func add(url: URL, name: String, fileName: String, mimeType: String) throws {
         let headers = defineBodyPartHeader(name: name, fileName: fileName, mimeType: mimeType)
 
-        guard let fileSize = try fileManager.attributesOfItem(atPath: url.path)[.size] as? NSNumber else {
-            throw MultipartFormData.Error.fileSizeNotAvailable(url)
-        }
+        _ = try url.checkResourceIsReachable()
 
-        let length = fileSize.intValue
-        bodyParts.append(BodyPart(headers: headers, url: url, length: length))
+        bodyParts.append(BodyPart(headers: headers, content: .file(url)))
     }
 
     /// Creates a body part from the data and add it to the instance.
@@ -161,7 +136,7 @@ public struct MultipartFormData {
     public mutating func add(data: Data, name: String, fileName: String? = nil, mimeType: String? = nil) {
         let headers = defineBodyPartHeader(name: name, fileName: fileName, mimeType: mimeType)
 
-        bodyParts.append(BodyPart(headers: headers, data: data))
+        bodyParts.append(BodyPart(headers: headers, content: .data(data)))
     }
 
     private func defineBodyPartHeader(name: String, fileName: String?, mimeType: String?) -> [Header] {
@@ -203,15 +178,6 @@ public struct MultipartFormData {
         }
 
         return HTTPContentType.octetStream.value
-    }
-
-}
-
-public extension MultipartFormData {
-
-    enum Error: Swift.Error {
-        case fileSizeNotAvailable(URL)
-        case inputStreamCreationFailed(URL)
     }
 
 }

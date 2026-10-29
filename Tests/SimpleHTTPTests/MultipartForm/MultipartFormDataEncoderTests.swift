@@ -23,7 +23,7 @@ class MultipartFormDataEncoderTests: XCTestCase {
         let expectedData = Data(expectedString.utf8)
 
         // When
-        var encoder = MultipartFormDataEncoder(body: multipart)
+        let encoder = MultipartFormDataEncoder(body: multipart)
         let encodedData = try encoder.encode()
 
         // Then
@@ -55,7 +55,7 @@ class MultipartFormDataEncoderTests: XCTestCase {
         )
         let expectedData = Data(expectedString.utf8)
 
-        var encoder = MultipartFormDataEncoder(body: multipart)
+        let encoder = MultipartFormDataEncoder(body: multipart)
         let encodedData = try encoder.encode()
 
         XCTAssertEqual(encodedData, expectedData)
@@ -80,7 +80,7 @@ class MultipartFormDataEncoderTests: XCTestCase {
         expectedData.append(try Data(contentsOf: url))
         expectedData.append(Boundary.data(for: .final, boundary: boundary))
 
-        var encoder = MultipartFormDataEncoder(body: multipart)
+        let encoder = MultipartFormDataEncoder(body: multipart)
         let encodedData = try encoder.encode()
 
         XCTAssertEqual(encodedData, expectedData)
@@ -116,7 +116,7 @@ class MultipartFormDataEncoderTests: XCTestCase {
         expectedData.append(try Data(contentsOf: url2))
         expectedData.append(Boundary.data(for: .final, boundary: boundary))
 
-        var encoder = MultipartFormDataEncoder(body: multipart)
+        let encoder = MultipartFormDataEncoder(body: multipart)
         let encodedData = try encoder.encode()
 
         XCTAssertEqual(encodedData, expectedData)
@@ -152,7 +152,7 @@ class MultipartFormDataEncoderTests: XCTestCase {
         expectedData.append(try Data(contentsOf: url))
         expectedData.append(Boundary.data(for: .final, boundary: boundary))
 
-        var encoder = MultipartFormDataEncoder(body: multipart)
+        let encoder = MultipartFormDataEncoder(body: multipart)
         let encodedData = try encoder.encode()
 
         XCTAssertEqual(encodedData, expectedData)
@@ -166,10 +166,23 @@ class MultipartFormDataEncoderTests: XCTestCase {
         let name1 = "data"
         multipart.add(data: Data(data.utf8), name: name1)
 
-        var encoder = MultipartFormDataEncoder(body: multipart)
+        let encoder = MultipartFormDataEncoder(body: multipart)
         _ = try encoder.encode()
 
         XCTAssertNoThrow(_ = try encoder.encode())
+    }
+
+    func test_encode_fileRemovedAfterAdd_throw() throws {
+        var multipart = MultipartFormData(boundary: "boundary")
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).txt")
+        try Data("content".utf8).write(to: url)
+
+        try multipart.add(url: url, name: "file")
+        try FileManager.default.removeItem(at: url)
+
+        let encoder = MultipartFormDataEncoder(body: multipart)
+
+        XCTAssertThrowsError(try encoder.encode())
     }
 
 }

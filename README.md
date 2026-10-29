@@ -127,7 +127,7 @@ Second example show same request but this time audio file is just some raw unkno
   static func send(audioFile: Data) throws -> Request<SendAudioResponse> {
     var multipart = MultipartFormData()
 
-    try multipart.add(data: audioFile, name: "your_name", mimeType: "audioFile_mimeType")
+    multipart.add(data: audioFile, name: "your_name", mimeType: "audioFile_mimeType")
 
     return .post("v1/sendAudio", body: multipart)
   }
@@ -142,7 +142,7 @@ extension Request {
     var multipart = MultipartFormData()
 
     try multipart.add(url: audio, name: "define_your_name")
-    try multipart.add(data: image, name: "your_name", mimeType: "image_mimeType")
+    multipart.add(data: image, name: "your_name", mimeType: "image_mimeType")
 
     return .post("v1/send", body: multipart)
   }

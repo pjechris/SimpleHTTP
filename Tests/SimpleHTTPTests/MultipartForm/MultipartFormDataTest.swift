@@ -65,4 +65,12 @@ class MultipartFormDataTest: XCTestCase {
         XCTAssertEqual(bodyPart.headers, expectedHeaders)
     }
 
+    func test_addURL_fileNotFound_throw() {
+        var multipart = MultipartFormData(boundary: "boundary")
+        let url = FileManager.default.temporaryDirectory.appendingPathComponent("\(UUID().uuidString).png")
+
+        XCTAssertThrowsError(try multipart.add(url: url, name: "missing"))
+        XCTAssertTrue(multipart.bodyParts.isEmpty)
+    }
+
 }
